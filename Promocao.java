@@ -1,3 +1,3 @@
 public abstract class Promocao {
-      protected abstract double custoAposPromocao(int quantidade);
+      protected abstract double custoAposPromocao(int quantidade);}
       

@@ -56,31 +56,35 @@ public class App {
                     // nome
                     else if (line.charAt(0) == '2') {
                         c.setNome(line.substring(2));
-                        System.out.println(c.getNome());
+
                     }
                     // morada
                     else if (line.charAt(0) == '3') {
                         String[] moradaPartes = line.substring(2).split(",");
-                        Morada m = new Morada(moradaPartes[0],Integer.parseInt(moradaPartes[1]),Integer.parseInt(moradaPartes[2]));
+                        Morada m = new Morada(moradaPartes[0], Integer.parseInt(moradaPartes[1]),
+                                Integer.parseInt(moradaPartes[2]));
                         c.setMorada(m);
-                        System.out.println(c.getMorada());
 
                     }
                     // email
                     else if (line.charAt(0) == '4') {
-
+                        c.setEmail(line.substring(2));
                     }
                     // telefone
                     else if (line.charAt(0) == '5') {
-
+                        c.setTelefone(Integer.parseInt(line.substring(2)));
                     }
                     // data de nascimento
                     else if (line.charAt(0) == '6') {
+                        String[] dataPartes = line.substring(2).split("/");
+                        Data d = new Data(Integer.parseInt(dataPartes[0]), Integer.parseInt(dataPartes[1]),
+                                Integer.parseInt(dataPartes[2]));
+                        // como é o ultimo parametro a ser preenchido, adiciona à lista de clientes
+                        if (c.isFrequente())
+                            clientesFrequentes.add(c);
+                        else
+                            clientesRegulares.add(c);
 
-                    }
-                    // cliente seguinte
-                    else {
-                        Cliente newC = new Cliente();
                     }
                 }
                 br.close();
