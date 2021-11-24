@@ -34,7 +34,7 @@ public class App {
         dataAtual.setAno(ano);
     }
 
-    public void fetchClientes() {
+    public void parseClientes() {
         File f = new File("clientes.txt");
 
         if (f.exists() && f.isFile()) {
@@ -43,19 +43,27 @@ public class App {
                 BufferedReader br = new BufferedReader(fr);
 
                 String line;
-                Cliente c = new Cliente();
+                Cliente c = null;
                 while ((line = br.readLine()) != null) {
 
+                    if (line.charAt(0) == '*') {
+                        c = new Cliente();
+                    }
                     // frequente/regular
-                    if (line.charAt(0) == '1') {
+                    else if (line.charAt(0) == '1') {
                         c.setFrequente(line.charAt(1) == 'f');
                     }
                     // nome
                     else if (line.charAt(0) == '2') {
-                        c.setNome(line.substring(1));
+                        c.setNome(line.substring(2));
+                        System.out.println(c.getNome());
                     }
                     // morada
                     else if (line.charAt(0) == '3') {
+                        String[] moradaPartes = line.substring(2).split(",");
+                        Morada m = new Morada(moradaPartes[0],Integer.parseInt(moradaPartes[1]),Integer.parseInt(moradaPartes[2]));
+                        c.setMorada(m);
+                        System.out.println(c.getMorada());
 
                     }
                     // email
@@ -72,7 +80,7 @@ public class App {
                     }
                     // cliente seguinte
                     else {
-                        Cliente c = new Cliente();
+                        Cliente newC = new Cliente();
                     }
                 }
                 br.close();
@@ -101,7 +109,7 @@ public class App {
     public static void main(String[] args) {
 
         App gestor = new App();
-        gestor.fetchClientes();
+        gestor.parseClientes();
         gestor.listaClientes();
 
     }
