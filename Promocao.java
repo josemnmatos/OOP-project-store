@@ -1,4 +1,4 @@
-public interface Promocao {
-      double custoAposPromocao(int quantidade);
+public abstract class Promocao {
+      protected abstract double custoAposPromocao(int quantidade);
       
 }

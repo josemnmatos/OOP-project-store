@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
 
 public class Compra {
       private Cliente cliente;
@@ -15,6 +14,6 @@ public class Compra {
             this.produtos.add(item);
       }
 
-      
+
 
 }

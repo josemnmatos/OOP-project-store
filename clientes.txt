@@ -1,8 +1,7 @@
-*
-r
-Gilberto
-Rua do pau,32,3000100
-gilbi@gmail.com
-911111111
-27/10/1993
+1.r
+2.Gilberto
+3.Rua do pau,32,3000100
+4.gilbi@gmail.com
+5.911111111
+6.27/10/1993
 *
