@@ -14,6 +14,17 @@ public class Dimensao {
             }
       }
 
+
+      @Override
+      public String toString() {
+            return "{" +
+                  " altura='" + getAltura() + "'" +
+                  ", largura='" + getLargura() + "'" +
+                  ", profundidade='" + getProfundidade() + "'" +
+                  "}";
+      }
+      
+
       public double getAltura() {
             return this.altura;
       }

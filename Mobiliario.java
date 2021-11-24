@@ -13,4 +13,20 @@ final public class Mobiliario extends Produto {
             }
             this.dimensao = dimensao;
       }
+
+      public double getPeso() {
+            return this.peso;
+      }
+
+      public void setPeso(double peso) {
+            this.peso = peso;
+      }
+
+      public Dimensao getDimensao() {
+            return this.dimensao;
+      }
+
+      public void setDimensao(Dimensao dimensao) {
+            this.dimensao = dimensao;
+      }
 }

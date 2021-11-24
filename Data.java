@@ -1,5 +1,4 @@
 
-
 public class Data {
       private int dia;
       private int mes;
@@ -43,6 +42,11 @@ public class Data {
 
       public void setAno(int ano) {
             this.ano = ano;
+      }
+
+      @Override
+      public String toString() {
+            return dia+"/"+mes+"/"+ano;
       }
 
 }

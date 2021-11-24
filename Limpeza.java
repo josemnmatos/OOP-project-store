@@ -11,4 +11,13 @@ final public class Limpeza extends Produto {
                   this.grauToxicidade = grauToxicidade;
             }
       }
+
+      public int getGrauToxicidade() {
+            return this.grauToxicidade;
+      }
+
+      public void setGrauToxicidade(int grauToxicidade) {
+            this.grauToxicidade = grauToxicidade;
+      }
+
 }

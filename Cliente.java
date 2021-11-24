@@ -1,4 +1,4 @@
-public class Cliente {
+public abstract class Cliente {
       protected String nome;
       protected Morada morada;
       protected String email;
@@ -9,7 +9,7 @@ public class Cliente {
             this.nome = nome;
             this.morada = morada;
             this.email = email;
-            if(telefone<100000000||telefone>999999999){
+            if (telefone < 100000000 || telefone > 999999999) {
                   System.out.println("Telefone inválido");
                   System.exit(1);
             }
