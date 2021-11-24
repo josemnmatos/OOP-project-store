@@ -51,7 +51,7 @@ public class App {
                     }
                     // frequente/regular
                     else if (line.charAt(0) == '1') {
-                        c.setFrequente(line.charAt(1) == 'f');
+                        c.setFrequente(line.charAt(2) == 'f');
                     }
                     // nome
                     else if (line.charAt(0) == '2') {
