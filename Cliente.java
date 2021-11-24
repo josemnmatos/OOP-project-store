@@ -23,6 +23,20 @@ public class Cliente {
             this.dataNascimento = dataNascimento;
             this.frequente = frequente;
       }
+
+
+      @Override
+      public String toString() {
+            return "{" +
+                  " nome='" + getNome() + "'" +
+                  ", morada='" + getMorada().toString() + "'" +
+                  ", email='" + getEmail() + "'" +
+                  ", telefone='" + getTelefone() + "'" +
+                  ", dataNascimento='" + getDataNascimento().toString() + "'" +
+                  ", frequente='" + isFrequente() + "'" +
+                  "}";
+      }
+
       
 
       public String getNome() {

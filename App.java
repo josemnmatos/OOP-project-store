@@ -79,6 +79,7 @@ public class App {
                         String[] dataPartes = line.substring(2).split("/");
                         Data d = new Data(Integer.parseInt(dataPartes[0]), Integer.parseInt(dataPartes[1]),
                                 Integer.parseInt(dataPartes[2]));
+                        c.setDataNascimento(d);
                         // como é o ultimo parametro a ser preenchido, adiciona à lista de clientes
                         if (c.isFrequente())
                             clientesFrequentes.add(c);
@@ -102,11 +103,11 @@ public class App {
     public void listaClientes() {
         System.out.println("\nClientes frequentes:");
         for (Cliente c : clientesFrequentes) {
-            System.out.println(c.getNome());
+            System.out.println(c);
         }
         System.out.println("\nClientes regulares:");
         for (Cliente c : clientesRegulares) {
-            System.out.println(c.getNome());
+            System.out.println(c);
         }
     }
 
