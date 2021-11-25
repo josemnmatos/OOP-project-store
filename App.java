@@ -41,15 +41,12 @@ public class App {
                 FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 Boolean cont = true;
-                while (cont){
-                    Cliente client= (Cliente)ois.readObject();
-                    if (client != null){
+                while (cont) {
+                    Cliente client = (Cliente) ois.readObject();
+                    if (client != null) {
                         clientes.add(client);
-                    }
-                    else
+                    } else
                         cont = null;
-
-
                 }
                 Cliente c = (Cliente) ois.readObject();
                 clientes.add(c);
@@ -68,45 +65,46 @@ public class App {
                     FileReader fr = new FileReader(f);
                     BufferedReader br = new BufferedReader(fr);
                     String line;
-                    Cliente c = null;
+                    String nome = "";
+                    Morada morada = null;
+                    String email = "";
+                    int telefone = 999999999;
+                    Data dataNascimento = null;
+                    boolean frequente = false;
                     while ((line = br.readLine()) != null) {
 
                         if (line.charAt(0) == '*') {
-                            c = new Cliente();
+                            clientes.add(new Cliente(nome, morada, email, telefone, dataNascimento, frequente));
                         }
                         // frequente/regular
                         else if (line.charAt(0) == '1') {
-                            c.setFrequente(line.charAt(2) == 'f');
+                            frequente=(line.charAt(2) == 'f');
                         }
                         // nome
                         else if (line.charAt(0) == '2') {
-                            c.setNome(line.substring(2));
+                            nome=(line.substring(2));
 
                         }
                         // morada
                         else if (line.charAt(0) == '3') {
                             String[] moradaPartes = line.substring(2).split(",");
-                            Morada m = new Morada(moradaPartes[0], Integer.parseInt(moradaPartes[1]),
+                            morada = new Morada(moradaPartes[0], Integer.parseInt(moradaPartes[1]),
                                     Integer.parseInt(moradaPartes[2]));
-                            c.setMorada(m);
-
                         }
                         // email
                         else if (line.charAt(0) == '4') {
-                            c.setEmail(line.substring(2));
+                            email=(line.substring(2));
                         }
                         // telefone
                         else if (line.charAt(0) == '5') {
-                            c.setTelefone(Integer.parseInt(line.substring(2)));
+                            telefone=(Integer.parseInt(line.substring(2)));
                         }
                         // data de nascimento
                         else if (line.charAt(0) == '6') {
                             String[] dataPartes = line.substring(2).split("/");
-                            Data d = new Data(Integer.parseInt(dataPartes[0]), Integer.parseInt(dataPartes[1]),
+                            dataNascimento = new Data(Integer.parseInt(dataPartes[0]), Integer.parseInt(dataPartes[1]),
                                     Integer.parseInt(dataPartes[2]));
-                            c.setDataNascimento(d);
                             // como é o ultimo parametro a ser preenchido, adiciona à lista de clientes
-                            clientes.add(c);
                         }
                     }
                     br.close();
@@ -139,6 +137,7 @@ public class App {
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             for (Cliente c : clientes) {
                 oos.writeObject(c);
+                System.out.println("->" + c);
             }
             oos.close();
         } catch (FileNotFoundException ex) {
