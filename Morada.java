@@ -1,4 +1,6 @@
-public class Morada {
+import java.io.Serializable;
+
+public class Morada implements Serializable{
       private String rua;
       private int numero;
       private int codigoPostal;
