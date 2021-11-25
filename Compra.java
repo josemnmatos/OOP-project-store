@@ -14,6 +14,4 @@ public class Compra {
             this.produtos.add(item);
       }
 
-
-
 }

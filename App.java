@@ -4,8 +4,7 @@ import java.io.*;
 
 public class App {
     // preencher no arranque ao ler dos ficheiros
-    private ArrayList<Cliente> clientesRegulares = new ArrayList<>();
-    private ArrayList<Cliente> clientesFrequentes = new ArrayList<>();
+    private ArrayList<Cliente> clientes = new ArrayList<>();
     private ArrayList<Produto> produtosDisponiveis = new ArrayList<>();
     private ArrayList<Promocao> promocoesAtivas = new ArrayList<>();
 
@@ -35,75 +34,115 @@ public class App {
     }
 
     public void parseClientes() {
-        File f = new File("clientes.txt");
-        if (f.exists() && f.isFile()) {
-            try{
-                FileInputStream fis = new FileInputStream(f);
-                boolean cont = true;
-                ObjectInputStream ois= new ObjectInputStream(fis);
-                while(cont){
-                    Cliente client= null;
-                    client = (Cliente)ois.readObject();
-                    if(client != null){
-                        if (client.isFrequente()){
-                            clientesFrequentes.add(client);
-                        }
-                        else
-                            clientesRegulares.add(client);
-                    }
-                }
+        File obj = new File("clientes.obj");
+        // verifica a existencia de ficheiro de objetos
+        if (obj.exists() && obj.isFile()) {
+            try {
+                FileInputStream fis = new FileInputStream(obj);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                Cliente c = (Cliente) ois.readObject();
+                clientes.add(c);
                 ois.close();
-            
-            }
-             catch (FileNotFoundException ex) {
-                System.out.println("Erro a abrir o ficheiro.");
-            }
-            catch(IOException ex){
+            } catch (FileNotFoundException ex) {
+                System.out.println("Erro a abrir ficheiro.");
+            } catch (IOException ex) {
                 System.out.println("Erro a ler ficheiro.");
+            } catch (ClassNotFoundException ex) {
+                System.out.println("Erro a converter objeto.");
             }
-            catch(ClassNotFoundException ex){
-                System.out.println("Erro a converter objeto");
+        } else {// nao existe ficheiro de objetos
+            File f = new File("clientes.txt");
+            if (f.exists() && f.isFile()) {
+                try {
+                    FileReader fr = new FileReader(f);
+                    BufferedReader br = new BufferedReader(fr);
+                    String line;
+                    Cliente c = null;
+                    while ((line = br.readLine()) != null) {
+
+                        if (line.charAt(0) == '*') {
+                            c = new Cliente();
+                        }
+                        // frequente/regular
+                        else if (line.charAt(0) == '1') {
+                            c.setFrequente(line.charAt(2) == 'f');
+                        }
+                        // nome
+                        else if (line.charAt(0) == '2') {
+                            c.setNome(line.substring(2));
+
+                        }
+                        // morada
+                        else if (line.charAt(0) == '3') {
+                            String[] moradaPartes = line.substring(2).split(",");
+                            Morada m = new Morada(moradaPartes[0], Integer.parseInt(moradaPartes[1]),
+                                    Integer.parseInt(moradaPartes[2]));
+                            c.setMorada(m);
+
+                        }
+                        // email
+                        else if (line.charAt(0) == '4') {
+                            c.setEmail(line.substring(2));
+                        }
+                        // telefone
+                        else if (line.charAt(0) == '5') {
+                            c.setTelefone(Integer.parseInt(line.substring(2)));
+                        }
+                        // data de nascimento
+                        else if (line.charAt(0) == '6') {
+                            String[] dataPartes = line.substring(2).split("/");
+                            Data d = new Data(Integer.parseInt(dataPartes[0]), Integer.parseInt(dataPartes[1]),
+                                    Integer.parseInt(dataPartes[2]));
+                            c.setDataNascimento(d);
+                            // como é o ultimo parametro a ser preenchido, adiciona à lista de clientes
+                            clientes.add(c);
+                        }
+                    }
+                    br.close();
+                } catch (FileNotFoundException ex) {
+                    System.out.println("Erro a abrir ficheiro de texto.");
+                } catch (IOException ex) {
+                    System.out.println("Erro a ler ficheiro de texto.");
+                }
+
+            }
+            // cria ficheiro de objetos
+            try {
+                File objCreate = new File("clientes.obj");
+                if (objCreate.createNewFile()) {
+                    System.out.println("File created: " + objCreate.getName());
+                } else {
+                    System.out.println("Ficheiro de objetos já existe.");
+                }
+            } catch (IOException e) {
+                System.out.println("Erro ao criar ficheiro de objetos.");
             }
         }
-             
-            else {
-        
-            System.out.println("Ficheiro não existe. Será criado um");
-            Morada m = new Morada("Rua do pau", 32, 3020302);
-            Data d = new Data(2, 3, 1323);
-            Cliente gilberto = new Cliente("Gilberto", m, "gilbi@gmail.com", 916443557, d, true);
-            Morada m2 = new Morada("Rua da fruta", 5, 203402);
-            Data d2 = new Data(13, 5, 54332);
-            Cliente manafa = new Cliente("manafa", m2, "manafa@gmail.com", 916443557, d2, false);
-            try{
+
+    }
+
+    public void updateClientes() {
+        File f = new File("clientes.obj");
+        try {
             FileOutputStream fos = new FileOutputStream(f);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-           
-
-            oos.writeObject(gilberto);
-            oos.writeObject(manafa);
-            oos.close();
+            for (Cliente c : clientes) {
+                oos.writeObject(c);
             }
-            catch (FileNotFoundException ex) {
-            System.out.println("Erro a criar ficheiro de texto.");
-            } 
-            catch (IOException ex) {
-            System.out.println("Erro a escrever para o ficheiro de texto.");
-                }
-            }   
-    
+            oos.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Erro a criar ficheiro.");
+        } catch (IOException ex) {
+            System.out.println("Erro a escrever para o ficheiro.");
+        }
     }
-    
 
     public void listaClientes() {
-        System.out.println("\nClientes frequentes:");
-        for (Cliente c : clientesFrequentes) {
+        System.out.println("\nClientes :");
+        for (Cliente c : clientes) {
             System.out.println(c);
         }
-        System.out.println("\nClientes regulares:");
-        for (Cliente c : clientesRegulares) {
-            System.out.println(c);
-        }
+
     }
 
     public static void main(String[] args) {
@@ -111,6 +150,7 @@ public class App {
         App gestor = new App();
         gestor.parseClientes();
         gestor.listaClientes();
+        gestor.updateClientes();
 
     }
 }
