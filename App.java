@@ -39,10 +39,21 @@ public class App {
         if (f.exists() && f.isFile()) {
             try{
                 FileInputStream fis = new FileInputStream(f);
+                boolean cont = true;
                 ObjectInputStream ois= new ObjectInputStream(fis);
-                Cliente client = (Cliente)ois.readObject();
-                System.out.println(client);
+                while(cont){
+                    Cliente client= null;
+                    client = (Cliente)ois.readObject();
+                    if(client != null){
+                        if (client.isFrequente()){
+                            clientesFrequentes.add(client);
+                        }
+                        else
+                            clientesRegulares.add(client);
+                    }
+                }
                 ois.close();
+            
             }
              catch (FileNotFoundException ex) {
                 System.out.println("Erro a abrir o ficheiro.");
@@ -61,12 +72,16 @@ public class App {
             Morada m = new Morada("Rua do pau", 32, 3020302);
             Data d = new Data(2, 3, 1323);
             Cliente gilberto = new Cliente("Gilberto", m, "gilbi@gmail.com", 916443557, d, true);
+            Morada m2 = new Morada("Rua da fruta", 5, 203402);
+            Data d2 = new Data(13, 5, 54332);
+            Cliente manafa = new Cliente("manafa", m2, "manafa@gmail.com", 916443557, d2, false);
             try{
             FileOutputStream fos = new FileOutputStream(f);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
            
 
             oos.writeObject(gilberto);
+            oos.writeObject(manafa);
             oos.close();
             }
             catch (FileNotFoundException ex) {
