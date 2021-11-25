@@ -40,6 +40,17 @@ public class App {
             try {
                 FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
+                Boolean cont = true;
+                while (cont){
+                    Cliente client= (Cliente)ois.readObject();
+                    if (client != null){
+                        clientes.add(client);
+                    }
+                    else
+                        cont = null;
+
+
+                }
                 Cliente c = (Cliente) ois.readObject();
                 clientes.add(c);
                 ois.close();
