@@ -355,15 +355,12 @@ public class App {
                 case 1:
                     // adicionar produto
                     Produto produtoAtivo = null;
-                    // produto
-                    int index=0;
                     do {
                         System.out.print("Indique ID do produto a adicionar: ");
                         int idProduto = sc.nextInt();
                         for (Produto p : produtosDisponiveis) {
                             if (p.id == idProduto) {
                                 produtoAtivo = p;
-                                index=produtosDisponiveis.indexOf(p);
                             }
                         }
                     } while (produtoAtivo == null);
@@ -374,7 +371,7 @@ public class App {
                         quantidade = sc.nextInt();
                     } while (quantidade > produtoAtivo.stock);
                     // remove stock
-                    produtosDisponiveis
+                    produtoAtivo.stock = produtoAtivo.stock-quantidade;
                     // esgotado
                     if (produtoAtivo.stock == 0) {
                         produtosDisponiveis.remove(produtoAtivo);

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Compra {
       private Cliente cliente;
@@ -24,11 +25,12 @@ public class Compra {
       }
 
       public void removerProduto(Produto p, int quantidade) {
-            for (ItemCompra item : listaProduto) {
+            for (Iterator<ItemCompra> i = listaProduto.iterator(); i.hasNext();) {
+                  ItemCompra item = i.next();
                   if (item.getProduto().getId() == p.id) {
                         item.setQuantidade(item.getQuantidade() - quantidade);
                         if (item.getQuantidade() == 0) {
-                              listaProduto.remove(item);
+                              i.remove();
                         }
                   }
             }
