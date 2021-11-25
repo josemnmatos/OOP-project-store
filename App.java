@@ -5,6 +5,7 @@ import java.io.*;
 public class App {
     // preencher no arranque ao ler dos ficheiros
     private ArrayList<Cliente> clientes = new ArrayList<>();
+    private ArrayList<Cliente> clientesObj = new ArrayList<>();
     private ArrayList<Produto> produtosDisponiveis = new ArrayList<>();
     private ArrayList<Promocao> promocoesAtivas = new ArrayList<>();
 
@@ -37,29 +38,27 @@ public class App {
         File obj = new File("clientes.obj");
         // verifica a existencia de ficheiro de objetos
         if (obj.exists() && obj.isFile()) {
-            try {
+            try{
                 FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
-                Boolean cont = true;
-                while (cont){
+            while (true){
+                    try{
                     Cliente client= (Cliente)ois.readObject();
-                    if (client != null){
-                        clientes.add(client);
+                    clientesObj.add(client);               
                     }
-                    else
-                        cont = null;
-
-
-                }
-                Cliente c = (Cliente) ois.readObject();
-                clientes.add(c);
-                ois.close();
-            } catch (FileNotFoundException ex) {
-                System.out.println("Erro a abrir ficheiro.");
+                    catch(EOFException e){
+                        ois.close();
+                        break;
+                    }
+            }
+        }
+            catch (FileNotFoundException ex) {
+                System.err.println("Erro a abrir ficheiro.");
             } catch (IOException ex) {
-                System.out.println("Erro a ler ficheiro.");
+                System.err.println("Erro a ler ficheiro.");
+
             } catch (ClassNotFoundException ex) {
-                System.out.println("Erro a converter objeto.");
+                System.err.println("Erro a converter objeto.");
             }
         } else {// nao existe ficheiro de objetos
             File f = new File("clientes.txt");
@@ -111,9 +110,9 @@ public class App {
                     }
                     br.close();
                 } catch (FileNotFoundException ex) {
-                    System.out.println("Erro a abrir ficheiro de texto.");
+                    System.err.println("Erro a abrir ficheiro de texto.");
                 } catch (IOException ex) {
-                    System.out.println("Erro a ler ficheiro de texto.");
+                    System.err.println("Erro a ler ficheiro de texto.");
                 }
 
             }
@@ -121,12 +120,12 @@ public class App {
             try {
                 File objCreate = new File("clientes.obj");
                 if (objCreate.createNewFile()) {
-                    System.out.println("File created: " + objCreate.getName());
+                    System.err.println("File created: " + objCreate.getName());
                 } else {
-                    System.out.println("Ficheiro de objetos já existe.");
+                    System.err.println("Ficheiro de objetos já existe.");
                 }
             } catch (IOException e) {
-                System.out.println("Erro ao criar ficheiro de objetos.");
+                System.err.println("Erro ao criar ficheiro de objetos.");
             }
         }
 
@@ -135,22 +134,22 @@ public class App {
     public void updateClientes() {
         File f = new File("clientes.obj");
         try {
-            FileOutputStream fos = new FileOutputStream(f);
+            FileOutputStream fos = new FileOutputStream(f, true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            for (Cliente c : clientes) {
-                oos.writeObject(c);
+            for(Cliente i : clientes){
+                oos.writeObject(i);
             }
             oos.close();
         } catch (FileNotFoundException ex) {
-            System.out.println("Erro a criar ficheiro.");
+            System.err.println("Erro a criar ficheiro.");
         } catch (IOException ex) {
-            System.out.println("Erro a escrever para o ficheiro.");
+            System.err.println("Erro a escrever para o ficheiro.");
         }
     }
 
     public void listaClientes() {
         System.out.println("\nClientes :");
-        for (Cliente c : clientes) {
+        for (Cliente c : clientesObj) {
             System.out.println(c);
         }
 
