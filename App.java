@@ -36,69 +36,49 @@ public class App {
 
     public void parseClientes() {
         File f = new File("clientes.txt");
-
         if (f.exists() && f.isFile()) {
-            try {
-                FileReader fr = new FileReader(f);
-                BufferedReader br = new BufferedReader(fr);
-
-                String line;
-                Cliente c = null;
-                while ((line = br.readLine()) != null) {
-
-                    if (line.charAt(0) == '*') {
-                        c = new Cliente();
-                    }
-                    // frequente/regular
-                    else if (line.charAt(0) == '1') {
-                        c.setFrequente(line.charAt(2) == 'f');
-                    }
-                    // nome
-                    else if (line.charAt(0) == '2') {
-                        c.setNome(line.substring(2));
-
-                    }
-                    // morada
-                    else if (line.charAt(0) == '3') {
-                        String[] moradaPartes = line.substring(2).split(",");
-                        Morada m = new Morada(moradaPartes[0], Integer.parseInt(moradaPartes[1]),
-                                Integer.parseInt(moradaPartes[2]));
-                        c.setMorada(m);
-
-                    }
-                    // email
-                    else if (line.charAt(0) == '4') {
-                        c.setEmail(line.substring(2));
-                    }
-                    // telefone
-                    else if (line.charAt(0) == '5') {
-                        c.setTelefone(Integer.parseInt(line.substring(2)));
-                    }
-                    // data de nascimento
-                    else if (line.charAt(0) == '6') {
-                        String[] dataPartes = line.substring(2).split("/");
-                        Data d = new Data(Integer.parseInt(dataPartes[0]), Integer.parseInt(dataPartes[1]),
-                                Integer.parseInt(dataPartes[2]));
-                        c.setDataNascimento(d);
-                        // como é o ultimo parametro a ser preenchido, adiciona à lista de clientes
-                        if (c.isFrequente())
-                            clientesFrequentes.add(c);
-                        else
-                            clientesRegulares.add(c);
-
-                    }
-                }
-                br.close();
-
-            } catch (FileNotFoundException ex) {
-                System.out.println("Erro a abrir ficheiro de texto.");
-            } catch (IOException ex) {
-                System.out.println("Erro a ler ficheiro de texto.");
+            try{
+                FileInputStream fis = new FileInputStream(f);
+                ObjectInputStream ois= new ObjectInputStream(fis);
+                Cliente client = (Cliente)ois.readObject();
+                System.out.println(client);
+                ois.close();
             }
-        } else {
-            System.out.println("Ficheiro não existe.");
+             catch (FileNotFoundException ex) {
+                System.out.println("Erro a abrir o ficheiro.");
+            }
+            catch(IOException ex){
+                System.out.println("Erro a ler ficheiro.");
+            }
+            catch(ClassNotFoundException ex){
+                System.out.println("Erro a converter objeto");
+            }
         }
+             
+            else {
+        
+            System.out.println("Ficheiro não existe. Será criado um");
+            Morada m = new Morada("Rua do pau", 32, 3020302);
+            Data d = new Data(2, 3, 1323);
+            Cliente gilberto = new Cliente("Gilberto", m, "gilbi@gmail.com", 916443557, d, true);
+            try{
+            FileOutputStream fos = new FileOutputStream(f);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+           
+
+            oos.writeObject(gilberto);
+            oos.close();
+            }
+            catch (FileNotFoundException ex) {
+            System.out.println("Erro a criar ficheiro de texto.");
+            } 
+            catch (IOException ex) {
+            System.out.println("Erro a escrever para o ficheiro de texto.");
+                }
+            }   
+    
     }
+    
 
     public void listaClientes() {
         System.out.println("\nClientes frequentes:");

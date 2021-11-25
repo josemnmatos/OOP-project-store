@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Data {
+public class Data implements Serializable {
       private int dia;
       private int mes;
       private int ano;

@@ -1,0 +1,44 @@
+while ((line = br.readLine()) != null) {
+
+                    if (line.charAt(0) == '*') {
+                        c = new Cliente();
+                    }
+                    // frequente/regular
+                    else if (line.charAt(0) == '1') {
+                        c.setFrequente(line.charAt(2) == 'f');
+                    }
+                    // nome
+                    else if (line.charAt(0) == '2') {
+                        c.setNome(line.substring(2));
+
+                    }
+                    // morada
+                    else if (line.charAt(0) == '3') {
+                        String[] moradaPartes = line.substring(2).split(",");
+                        Morada m = new Morada(moradaPartes[0], Integer.parseInt(moradaPartes[1]),
+                                Integer.parseInt(moradaPartes[2]));
+                        c.setMorada(m);
+
+                    }
+                    // email
+                    else if (line.charAt(0) == '4') {
+                        c.setEmail(line.substring(2));
+                    }
+                    // telefone
+                    else if (line.charAt(0) == '5') {
+                        c.setTelefone(Integer.parseInt(line.substring(2)));
+                    }
+                    // data de nascimento
+                    else if (line.charAt(0) == '6') {
+                        String[] dataPartes = line.substring(2).split("/");
+                        Data d = new Data(Integer.parseInt(dataPartes[0]), Integer.parseInt(dataPartes[1]),
+                                Integer.parseInt(dataPartes[2]));
+                        c.setDataNascimento(d);
+                        // como é o ultimo parametro a ser preenchido, adiciona à lista de clientes
+                        if (c.isFrequente())
+                            clientesFrequentes.add(c);
+                        else
+                            clientesRegulares.add(c);
+
+                    }
+                }
