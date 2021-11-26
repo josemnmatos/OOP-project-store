@@ -15,8 +15,8 @@ public class App {
     private Data dataAtual = new Data(21, 11, 2021);
 
     // DATA ATUAL
-    public void mostraDataAtual() {
-        System.out.println(dataAtual);
+    public Data getDataAtual() {
+        return dataAtual;
     }
 
     public void mudaDataAtual() {
@@ -30,7 +30,6 @@ public class App {
             System.out.println("Ano: ");
             ano = sc.nextInt();
         } while (dia < 1 || dia >= 32 || mes < 1 || mes >= 13);
-        sc.close();
         dataAtual.setDia(dia);
         dataAtual.setMes(mes);
         dataAtual.setAno(ano);
@@ -77,13 +76,13 @@ public class App {
                         Data d = new Data(Integer.parseInt(data[0]), Integer.parseInt(data[1]),
                                 Integer.parseInt(data[2]));
                         if (detalhesCliente[0].equals("f")) {
-                            Cliente cRegular = new ClienteFrequente(detalhesCliente[1], m, detalhesCliente[3],
-                                    Integer.parseInt(detalhesCliente[4]), d);
-                            clientes.add(cRegular);
-                        } else {
-                            Cliente cFrequente = new Cliente(detalhesCliente[1], m, detalhesCliente[3],
+                            Cliente cFrequente = new ClienteFrequente(detalhesCliente[1], m, detalhesCliente[3],
                                     Integer.parseInt(detalhesCliente[4]), d);
                             clientes.add(cFrequente);
+                        } else {
+                            Cliente cRegular = new Cliente(detalhesCliente[1], m, detalhesCliente[3],
+                                    Integer.parseInt(detalhesCliente[4]), d);
+                            clientes.add(cRegular);
                         }
 
                     }
@@ -317,14 +316,80 @@ public class App {
         }
     }
 
-
     public static void main(String[] args) {
 
         App gestor = new App();
+
         gestor.parseClientes();
         gestor.parseProdutos();
-        gestor.listaClientes();
-        gestor.listaProdutos();
 
+        boolean loggedIn = false;
+        while (true) {
+
+            Cliente clienteAtivo = null;
+            Scanner sc = new Scanner(System.in);
+            while (loggedIn == false) {
+                System.out.println(gestor.getDataAtual());
+                System.out.println("1) Fazer log-in\n2) Terminar programa");
+                int option = sc.nextInt();
+                switch (option) {
+
+                    case 1:
+                        System.out.print("Email-> ");
+                        Scanner em = new Scanner(System.in);
+                        String email = em.nextLine();
+                        for (Cliente c : gestor.clientes) {
+                            if (email.equals(c.getEmail())) {
+                                clienteAtivo = c;
+                                break;
+                            }
+                        }
+                        System.out.println("Log-in efetuado.\n");
+                        loggedIn = true;
+                        break;
+
+                    case 2:
+                        sc.close();
+                        System.exit(1);
+
+                }
+
+            }
+
+            while (loggedIn == true) {
+                System.out.println("Bem-vindo, " + clienteAtivo.getNome() + ".");
+                // easter egg
+                if (clienteAtivo.getDataNascimento().getDia() == gestor.getDataAtual().getDia()
+                        && clienteAtivo.getDataNascimento().getMes() == gestor.getDataAtual().getMes()
+                        && clienteAtivo.getDataNascimento().getAno() < gestor.getDataAtual().getAno()) {
+                    System.out.println("FELIZ ANIVERSÁRIO! "
+                            + (gestor.getDataAtual().getAno() - clienteAtivo.getDataNascimento().getAno()) + "!\n");
+                }
+                System.out.println(
+                        "\n1) Realizar compra\n2) Compras realizadas\n3) Mudar data atual\n4) Log-out\n5) Terminar programa");
+                int option = sc.nextInt();
+                switch (option) {
+
+                    case 1:
+
+                    case 2:
+
+                    case 3:
+                        gestor.mudaDataAtual();
+                        System.out.println(gestor.getDataAtual());
+                        break;
+                    case 4:
+                        System.out.println("Log-out efetuado.\n");
+                        loggedIn = false;
+                        break;
+                    case 5:
+                        sc.close();
+                        System.exit(1);
+
+                }
+
+            }
+
+        }
     }
 }
