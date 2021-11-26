@@ -2,9 +2,6 @@ final public class Alimentar extends Produto {
       private double kcalPor100g;
       private double percentagemGordura;
 
-      public Alimentar(){
-            
-      }
 
       public Alimentar(int id, String nome, double precoUnitario, int stock, double kcalPor100g,
                   double percentagemGordura) {
@@ -39,6 +36,16 @@ final public class Alimentar extends Produto {
       public void setPercentagemGordura(double percentagemGordura) {
             this.percentagemGordura = percentagemGordura;
       }
+
+
+      @Override
+      public String toString() {
+            return "{" +
+                  " kcalPor100g='" + getKcalPor100g() + "'" +
+                  ", percentagemGordura='" + getPercentagemGordura() + "'" +
+                  "}";
+      }
+
 
 
 

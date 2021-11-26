@@ -1,11 +1,13 @@
-public abstract class Produto {
+import java.io.Serializable;
+
+public abstract class Produto implements Serializable {
       protected int id;
       protected String nome;
       protected double precoUnitario;
       protected int stock;
 
       public Produto(){
-            
+
       }
 
       public Produto(int id, String nome, double precoUnitario, int stock) {
@@ -30,5 +32,51 @@ public abstract class Produto {
             }
 
       }
+
+
+      public int getId() {
+            return this.id;
+      }
+
+      public void setId(int id) {
+            this.id = id;
+      }
+
+      public String getNome() {
+            return this.nome;
+      }
+
+      public void setNome(String nome) {
+            this.nome = nome;
+      }
+
+      public double getPrecoUnitario() {
+            return this.precoUnitario;
+      }
+
+      public void setPrecoUnitario(double precoUnitario) {
+            this.precoUnitario = precoUnitario;
+      }
+
+      public int getStock() {
+            return this.stock;
+      }
+
+      public void setStock(int stock) {
+            this.stock = stock;
+      }
+
+
+
+      @Override
+      public String toString() {
+            return "{" +
+                  " id='" + getId() + "'" +
+                  ", nome='" + getNome() + "'" +
+                  ", precoUnitario='" + getPrecoUnitario() + "'" +
+                  ", stock='" + getStock() + "'" +
+                  "}";
+      }
+
 
 }
