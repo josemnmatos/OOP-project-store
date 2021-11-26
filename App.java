@@ -179,9 +179,17 @@ public class App {
                         break;
                     }
                 }
-                // le limpeza
-                fis = new FileInputStream(objL);
-                ois = new ObjectInputStream(fis);
+            } catch (FileNotFoundException ex) {
+                System.err.println("Erro a abrir ficheiro.");
+            } catch (IOException ex) {
+                System.err.println("Erro a ler ficheiro.");
+            } catch (ClassNotFoundException ex) {
+                System.err.println("Erro a converter objeto.");
+            }
+            // le limpeza
+            try {
+                FileInputStream fis = new FileInputStream(objL);
+                ObjectInputStream ois = new ObjectInputStream(fis);
                 while (true) {
                     try {
                         Limpeza p = (Limpeza) ois.readObject();
@@ -191,9 +199,17 @@ public class App {
                         break;
                     }
                 }
-                // le alimentar
-                fis = new FileInputStream(objA);
-                ois = new ObjectInputStream(fis);
+            } catch (FileNotFoundException ex) {
+                System.err.println("Erro a abrir ficheiro.");
+            } catch (IOException ex) {
+                System.err.println("Erro a ler ficheiro.");
+            } catch (ClassNotFoundException ex) {
+                System.err.println("Erro a converter objeto.");
+            }
+            // le alimentar
+            try {
+                FileInputStream fis = new FileInputStream(objA);
+                ObjectInputStream ois = new ObjectInputStream(fis);
                 while (true) {
                     try {
                         Alimentar p = (Alimentar) ois.readObject();
@@ -210,7 +226,9 @@ public class App {
             } catch (ClassNotFoundException ex) {
                 System.err.println("Erro a converter objeto.");
             }
-        } else {
+        } else
+
+        {
             File f = new File("produtos.txt");
             if (f.exists() && f.isFile()) {
                 try {

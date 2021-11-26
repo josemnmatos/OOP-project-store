@@ -1,4 +1,6 @@
-public class Dimensao {
+import java.io.Serializable;
+
+public class Dimensao implements Serializable {
       private double altura;
       private double largura;
       private double profundidade;
