@@ -42,8 +42,7 @@ public class Morada implements Serializable{
 
       @Override
       public String toString() {
-            return "{" + " rua='" + getRua() + "'" + ", numero='" + getNumero() + "'" + ", codigoPostal='"
-                        + getCodigoPostal() + "'" + "}";
+            return this.rua+", "+this.numero+", "+this.codigoPostal;
       }
 
 }

@@ -21,13 +21,11 @@ public class Cliente implements Serializable {
 
       @Override
       public String toString() {
-            return "{" +
-                        " nome='" + getNome() + "'" +
-                        ", morada='" + getMorada().toString() + "'" +
-                        ", email='" + getEmail() + "'" +
-                        ", telefone='" + getTelefone() + "'" +
-                        ", dataNascimento='" + getDataNascimento().toString() + "'" +
-                        "}";
+            return "\nNome: " + this.nome
+                        + "\nMorada: " + this.morada.toString()
+                        + "\nEmail: " + this.email
+                        + "\nTelefone: " + this.telefone
+                        + "\nData de Nascimento: " + this.dataNascimento.toString();
       }
 
       public String getNome() {

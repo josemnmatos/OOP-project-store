@@ -111,7 +111,7 @@ public class App {
     }
 
     // guarda valores da lista de clientes no ficheiro de objetos
-    public void createObjClientes() {
+    private void createObjClientes() {
         File f = new File("clientes.obj");
         try {
             FileOutputStream fos = new FileOutputStream(f, true);
@@ -259,7 +259,7 @@ public class App {
     }
 
     // guarda valores da lista de produtos no ficheiro de objetos
-    public void createObjProdutos() {
+    private void createObjProdutos() {
         File f = new File("produtosMobiliario.obj");
         try {
             FileOutputStream fos = new FileOutputStream(f, true);
@@ -315,8 +315,8 @@ public class App {
         for (Produto p : produtosAlimentar) {
             System.out.println(p);
         }
-
     }
+
 
     public static void main(String[] args) {
 

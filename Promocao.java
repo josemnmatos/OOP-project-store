@@ -1,3 +1,5 @@
 public abstract class Promocao {
-      protected abstract double custoAposPromocao(int quantidade);}
-      
+      protected Produto produtoAssociado;
+
+      protected abstract double custoAposPromocao(int quantidade);
+}
