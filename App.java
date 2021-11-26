@@ -6,7 +6,9 @@ public class App {
     // preencher no arranque ao ler dos ficheiros
     private ArrayList<Cliente> clientes = new ArrayList<>();
     private ArrayList<Cliente> clientesObj = new ArrayList<>();
-    private ArrayList<Produto> produtosDisponiveis = new ArrayList<>();
+    private ArrayList<Produto> produtosMobiliario = new ArrayList<>();
+    private ArrayList<Produto> produtosLimpeza = new ArrayList<>();
+    private ArrayList<Produto> produtosAlimentar = new ArrayList<>();
     private ArrayList<Promocao> promocoesAtivas = new ArrayList<>();
 
     // lista de compras realizadas
@@ -159,16 +161,43 @@ public class App {
     // PRODUTOS
 
     public void parseProdutos() {
-        File obj = new File("produtos.obj");
+        File objM = new File("produtosMobiliario.obj");
+        File objL = new File("produtosLimpeza.obj");
+        File objA = new File("produtosAlimentar.obj");
         // verifica a existencia de ficheiro de objetos
-        if (obj.exists() && obj.isFile()) {
+        if (objM.exists() && objM.isFile() && objL.exists() && objL.isFile() && objA.exists() && objA.isFile()) {
             try {
-                FileInputStream fis = new FileInputStream(obj);
+                // le mobiliario
+                FileInputStream fis = new FileInputStream(objM);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 while (true) {
                     try {
-                        Produto p = (Produto) ois.readObject();
-                        produtosDisponiveis.add(p);
+                        Produto p = (Mobiliario) ois.readObject();
+                        produtosMobiliario.add(p);
+                    } catch (EOFException e) {
+                        ois.close();
+                        break;
+                    }
+                }
+                // le limpeza
+                fis = new FileInputStream(objL);
+                ois = new ObjectInputStream(fis);
+                while (true) {
+                    try {
+                        Produto p = (Limpeza) ois.readObject();
+                        produtosLimpeza.add(p);
+                    } catch (EOFException e) {
+                        ois.close();
+                        break;
+                    }
+                }
+                // le alimentar
+                fis = new FileInputStream(objA);
+                ois = new ObjectInputStream(fis);
+                while (true) {
+                    try {
+                        Produto p = (Alimentar) ois.readObject();
+                        produtosAlimentar.add(p);
                     } catch (EOFException e) {
                         ois.close();
                         break;
@@ -178,79 +207,97 @@ public class App {
                 System.err.println("Erro a abrir ficheiro.");
             } catch (IOException ex) {
                 System.err.println("Erro a ler ficheiro.");
-
             } catch (ClassNotFoundException ex) {
                 System.err.println("Erro a converter objeto.");
-            }}else{
-        File f = new File("produtos.txt");
-        if (f.exists() && f.isFile()) {
-            try {
-                FileReader fr = new FileReader(f);
-                BufferedReader br = new BufferedReader(fr);
-                String line;
-                while ((line = br.readLine()) != null) {
-                    String[] detalhesProduto = line.split(",");
+            }
+        } else {
+            File f = new File("produtos.txt");
+            if (f.exists() && f.isFile()) {
+                try {
+                    FileReader fr = new FileReader(f);
+                    BufferedReader br = new BufferedReader(fr);
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        String[] detalhesProduto = line.split(",");
 
-                    if (detalhesProduto[0].equals("mobiliario")) {
-                        double peso = Double.parseDouble(detalhesProduto[5]);
-                        String[] dimensoes = detalhesProduto[6].split("/");
-                        Dimensao d = new Dimensao(Double.parseDouble(dimensoes[0]), Double.parseDouble(dimensoes[1]),
-                                Double.parseDouble(dimensoes[2]));
-                        // id,nome,preco,stock,peso,dimensao
-                        Mobiliario p = new Mobiliario(Integer.parseInt(detalhesProduto[1]), detalhesProduto[2],
-                                Double.parseDouble(detalhesProduto[3]), Integer.parseInt(detalhesProduto[4]), peso, d);
-                        produtosDisponiveis.add(p);
+                        if (detalhesProduto[0].equals("mobiliario")) {
+                            double peso = Double.parseDouble(detalhesProduto[5]);
+                            String[] dimensoes = detalhesProduto[6].split("/");
+                            Dimensao d = new Dimensao(Double.parseDouble(dimensoes[0]),
+                                    Double.parseDouble(dimensoes[1]), Double.parseDouble(dimensoes[2]));
+                            // id,nome,preco,stock,peso,dimensao
+                            Mobiliario p = new Mobiliario(Integer.parseInt(detalhesProduto[1]), detalhesProduto[2],
+                                    Double.parseDouble(detalhesProduto[3]), Integer.parseInt(detalhesProduto[4]), peso,
+                                    d);
+                            produtosMobiliario.add(p);
 
-                    } else if (detalhesProduto[0].equals("limpeza")) {
-                        int grauToxicidade = Integer.parseInt(detalhesProduto[5]);
-                        // id,nome,preco,stock,grau de toxicidade
-                        Limpeza p = new Limpeza(Integer.parseInt(detalhesProduto[1]), detalhesProduto[2],
-                                Double.parseDouble(detalhesProduto[3]), Integer.parseInt(detalhesProduto[4]),
-                                grauToxicidade);
-                        produtosDisponiveis.add(p);
+                        } else if (detalhesProduto[0].equals("limpeza")) {
+                            int grauToxicidade = Integer.parseInt(detalhesProduto[5]);
+                            // id,nome,preco,stock,grau de toxicidade
+                            Limpeza p = new Limpeza(Integer.parseInt(detalhesProduto[1]), detalhesProduto[2],
+                                    Double.parseDouble(detalhesProduto[3]), Integer.parseInt(detalhesProduto[4]),
+                                    grauToxicidade);
+                            produtosLimpeza.add(p);
 
-                    } else if (detalhesProduto[0].equals("alimentar")) {
-                        double kcal = Double.parseDouble(detalhesProduto[5]);
-                        double percentagemGordura = Double.parseDouble(detalhesProduto[6]);
-                        // id,nome,preco,stock,kcal,percent de gordura
-                        Alimentar p = new Alimentar(Integer.parseInt(detalhesProduto[1]), detalhesProduto[2],
-                                Double.parseDouble(detalhesProduto[3]), Integer.parseInt(detalhesProduto[4]), kcal,
-                                percentagemGordura);
-                        produtosDisponiveis.add(p);
+                        } else if (detalhesProduto[0].equals("alimentar")) {
+                            double kcal = Double.parseDouble(detalhesProduto[5]);
+                            double percentagemGordura = Double.parseDouble(detalhesProduto[6]);
+                            // id,nome,preco,stock,kcal,percent de gordura
+                            Alimentar p = new Alimentar(Integer.parseInt(detalhesProduto[1]), detalhesProduto[2],
+                                    Double.parseDouble(detalhesProduto[3]), Integer.parseInt(detalhesProduto[4]), kcal,
+                                    percentagemGordura);
+                            produtosAlimentar.add(p);
 
-                    } else {
-                        System.out.println("Erro: Produto inválido.");
+                        } else {
+                            System.out.println("Erro: Produto inválido.");
+                        }
+
                     }
-
+                    br.close();
+                } catch (FileNotFoundException ex) {
+                    System.err.println("Erro a abrir ficheiro de texto.");
+                } catch (IOException ex) {
+                    System.err.println("Erro a ler ficheiro de texto.");
                 }
-                br.close();
-            } catch (FileNotFoundException ex) {
-                System.err.println("Erro a abrir ficheiro de texto.");
-            } catch (IOException ex) {
-                System.err.println("Erro a ler ficheiro de texto.");
             }
+
         }
-        // cria ficheiro de objetos
-        try {
-            File objCreate = new File("produtos.obj");
-            if (objCreate.createNewFile()) {
-                System.err.println("File created: " + objCreate.getName());
-            } else {
-                System.err.println("Ficheiro de objetos já existe.");
-            }
-        } catch (IOException e) {
-            System.err.println("Erro ao criar ficheiro de objetos.");
-        }}
 
     }
 
     // guarda valores da lista de produtos no ficheiro de objetos
     public void updateProdutos() {
-        File f = new File("produtos.obj");
+        File f = new File("produtosMobiliario.obj");
         try {
             FileOutputStream fos = new FileOutputStream(f, true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            for (Produto p : produtosDisponiveis) {
+            for (Produto p : produtosMobiliario) {
+                oos.writeObject(p);
+            }
+            oos.close();
+        } catch (FileNotFoundException ex) {
+            System.err.println("Erro a criar ficheiro.");
+        } catch (IOException ex) {
+            System.err.println("Erro a escrever para o ficheiro.");
+        }
+        f = new File("produtosLimpeza.obj");
+        try {
+            FileOutputStream fos = new FileOutputStream(f, true);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            for (Produto p : produtosLimpeza) {
+                oos.writeObject(p);
+            }
+            oos.close();
+        } catch (FileNotFoundException ex) {
+            System.err.println("Erro a criar ficheiro.");
+        } catch (IOException ex) {
+            System.err.println("Erro a escrever para o ficheiro.");
+        }
+        f = new File("produtosAlimentar.obj");
+        try {
+            FileOutputStream fos = new FileOutputStream(f, true);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            for (Produto p : produtosAlimentar) {
                 oos.writeObject(p);
             }
             oos.close();
@@ -263,8 +310,16 @@ public class App {
 
     // lista todos os produtos
     public void listaProdutos() {
-        System.out.println("\nProdutos :");
-        for (Produto p : produtosDisponiveis) {
+        System.out.println("\nProdutos :\nMobiliário: ");
+        for (Produto p : produtosMobiliario) {
+            System.out.println(p);
+        }
+        System.out.println("\nLimpeza: ");
+        for (Produto p : produtosLimpeza) {
+            System.out.println(p);
+        }
+        System.out.println("\nAlimentares: ");
+        for (Produto p : produtosAlimentar) {
             System.out.println(p);
         }
 
