@@ -158,8 +158,8 @@ public class App {
         }
 
     }
-    // PRODUTOS
 
+    // PRODUTOS
     public void parseProdutos() {
         File objM = new File("produtosMobiliario.obj");
         File objL = new File("produtosLimpeza.obj");
@@ -172,7 +172,7 @@ public class App {
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 while (true) {
                     try {
-                        Produto p = (Mobiliario) ois.readObject();
+                        Mobiliario p = (Mobiliario) ois.readObject();
                         produtosMobiliario.add(p);
                     } catch (EOFException e) {
                         ois.close();
@@ -184,7 +184,7 @@ public class App {
                 ois = new ObjectInputStream(fis);
                 while (true) {
                     try {
-                        Produto p = (Limpeza) ois.readObject();
+                        Limpeza p = (Limpeza) ois.readObject();
                         produtosLimpeza.add(p);
                     } catch (EOFException e) {
                         ois.close();
@@ -196,7 +196,7 @@ public class App {
                 ois = new ObjectInputStream(fis);
                 while (true) {
                     try {
-                        Produto p = (Alimentar) ois.readObject();
+                        Alimentar p = (Alimentar) ois.readObject();
                         produtosAlimentar.add(p);
                     } catch (EOFException e) {
                         ois.close();
