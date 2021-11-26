@@ -74,8 +74,8 @@ public class App {
                         String[] morada = detalhesCliente[2].split("/");
                         Morada m = new Morada(morada[0], Integer.parseInt(morada[1]), Integer.parseInt(morada[2]));
                         String[] data = detalhesCliente[5].split("/");
-                        Data d = new Data(Integer.parseInt(data[0]), Integer.parseInt(data[0]),
-                                Integer.parseInt(data[0]));
+                        Data d = new Data(Integer.parseInt(data[0]), Integer.parseInt(data[1]),
+                                Integer.parseInt(data[2]));
                         if (detalhesCliente[0].equals("f")) {
                             Cliente cRegular = new ClienteFrequente(detalhesCliente[1], m, detalhesCliente[3],
                                     Integer.parseInt(detalhesCliente[4]), d);
@@ -107,11 +107,11 @@ public class App {
                 System.err.println("Erro ao criar ficheiro de objetos.");
             }
         }
-
+        createObjClientes();
     }
 
     // guarda valores da lista de clientes no ficheiro de objetos
-    public void updateClientes() {
+    public void createObjClientes() {
         File f = new File("clientes.obj");
         try {
             FileOutputStream fos = new FileOutputStream(f, true);
@@ -257,11 +257,12 @@ public class App {
             }
 
         }
+        createObjProdutos();
 
     }
 
     // guarda valores da lista de produtos no ficheiro de objetos
-    public void updateProdutos() {
+    public void createObjProdutos() {
         File f = new File("produtosMobiliario.obj");
         try {
             FileOutputStream fos = new FileOutputStream(f, true);
@@ -327,8 +328,6 @@ public class App {
         gestor.parseProdutos();
         gestor.listaClientes();
         gestor.listaProdutos();
-        gestor.updateClientes();
-        gestor.updateProdutos();
 
     }
 }
