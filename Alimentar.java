@@ -2,6 +2,10 @@ final public class Alimentar extends Produto {
       private double kcalPor100g;
       private double percentagemGordura;
 
+      public Alimentar(){
+            
+      }
+
       public Alimentar(int id, String nome, double precoUnitario, int stock, double kcalPor100g,
                   double percentagemGordura) {
             super(id, nome, precoUnitario, stock);

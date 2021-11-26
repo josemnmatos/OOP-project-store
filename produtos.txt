@@ -1,0 +1,3 @@
+mobiliario,101,Cama,150.00,3,35.00,1.00/1.50/2.00
+limpeza,102,Lixívia,2.00,10,7
+alimentar,103,Manteiga de Amendoim,1.70,8,400.00,0.35

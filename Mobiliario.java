@@ -2,6 +2,10 @@ final public class Mobiliario extends Produto {
       private double peso;
       private Dimensao dimensao;
 
+      public Mobiliario(){
+            
+      }
+
       public Mobiliario(int id, String nome, double precoUnitario, int stock, double peso, Dimensao dimensao) {
             super(id, nome, precoUnitario, stock);
             if (peso < 0) {

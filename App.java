@@ -13,6 +13,7 @@ public class App {
     private ArrayList<Compra> comprasRealizadas = new ArrayList<>();
     private Data dataAtual = new Data(21, 11, 2021);
 
+    // DATA ATUAL
     public void mostraDataAtual() {
         System.out.println(dataAtual);
     }
@@ -34,25 +35,24 @@ public class App {
         dataAtual.setAno(ano);
     }
 
+    // CLIENTES
     public void parseClientes() {
         File obj = new File("clientes.obj");
         // verifica a existencia de ficheiro de objetos
         if (obj.exists() && obj.isFile()) {
-            try{
+            try {
                 FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
-            while (true){
-                    try{
-                    Cliente client= (Cliente)ois.readObject();
-                    clientesObj.add(client);               
-                    }
-                    catch(EOFException e){
+                while (true) {
+                    try {
+                        Cliente client = (Cliente) ois.readObject();
+                        clientesObj.add(client);
+                    } catch (EOFException e) {
                         ois.close();
                         break;
                     }
-            }
-        }
-            catch (FileNotFoundException ex) {
+                }
+            } catch (FileNotFoundException ex) {
                 System.err.println("Erro a abrir ficheiro.");
             } catch (IOException ex) {
                 System.err.println("Erro a ler ficheiro.");
@@ -131,12 +131,13 @@ public class App {
 
     }
 
+    // guarda valores da lista de clientes no ficheiro de objetos
     public void updateClientes() {
         File f = new File("clientes.obj");
         try {
             FileOutputStream fos = new FileOutputStream(f, true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            for(Cliente i : clientes){
+            for (Cliente i : clientes) {
                 oos.writeObject(i);
             }
             oos.close();
@@ -147,10 +148,57 @@ public class App {
         }
     }
 
+    // lista todos os clientes
     public void listaClientes() {
         System.out.println("\nClientes :");
         for (Cliente c : clientesObj) {
             System.out.println(c);
+        }
+
+    }
+    // PRODUTOS
+
+    public void parseProdutos() {
+        File f = new File("produtos.txt");
+        if (f.exists() && f.isFile()) {
+            try {
+                FileReader fr = new FileReader(f);
+                BufferedReader br = new BufferedReader(fr);
+                String line;
+                Produto p = null;
+                while ((line = br.readLine()) != null) {
+                    String[] detalhesProduto = line.split(",");
+                    if (detalhesProduto[0].equals("mobiliario")) {
+                        p = new Mobiliario();
+
+                    } else if (detalhesProduto[0].equals("limpeza")) {
+                        p = new Limpeza();
+
+                    } else if (detalhesProduto[0].equals("alimentar")) {
+                        p = new Alimentar();
+                    } else {
+                        System.out.println("Erro: Produto inválido.");
+                    }
+
+                }
+
+                br.close();
+            } catch (FileNotFoundException ex) {
+                System.err.println("Erro a abrir ficheiro de texto.");
+            } catch (IOException ex) {
+                System.err.println("Erro a ler ficheiro de texto.");
+            }
+        }
+        // cria ficheiro de objetos
+        try {
+            File objCreate = new File("produtos.obj");
+            if (objCreate.createNewFile()) {
+                System.err.println("File created: " + objCreate.getName());
+            } else {
+                System.err.println("Ficheiro de objetos já existe.");
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao criar ficheiro de objetos.");
         }
 
     }

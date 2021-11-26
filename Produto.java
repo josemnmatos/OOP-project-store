@@ -4,6 +4,10 @@ public abstract class Produto {
       protected double precoUnitario;
       protected int stock;
 
+      public Produto(){
+            
+      }
+
       public Produto(int id, String nome, double precoUnitario, int stock) {
             if (id < 0) {
                   System.out.println("Identificador de produto inválido.");
