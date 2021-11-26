@@ -1,3 +1,6 @@
 mobiliario,101,Cama,150.00,3,35.00,1.00/1.50/2.00
-limpeza,102,Lixívia,2.00,10,7
+limpeza,102,Lixivia,2.00,10,9
 alimentar,103,Manteiga de Amendoim,1.70,8,400.00,0.35
+mobiliario,104,Comoda,50.00,5,20.00,1.50/0.50/1.00
+limpeza,105,Detergente Roupa,5.00,15,6
+alimentar,106,Alheira,1.50,20,200.00,0.60
