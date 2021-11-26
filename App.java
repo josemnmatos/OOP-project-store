@@ -106,8 +106,8 @@ public class App {
             } catch (IOException e) {
                 System.err.println("Erro ao criar ficheiro de objetos.");
             }
+            createObjClientes();
         }
-        createObjClientes();
     }
 
     // guarda valores da lista de clientes no ficheiro de objetos
@@ -203,9 +203,7 @@ public class App {
             } catch (ClassNotFoundException ex) {
                 System.err.println("Erro a converter objeto.");
             }
-        } else
-
-        {
+        } else {
             File f = new File("produtos.txt");
             if (f.exists() && f.isFile()) {
                 try {
@@ -255,9 +253,8 @@ public class App {
                     System.err.println("Erro a ler ficheiro de texto.");
                 }
             }
-
+            createObjProdutos();
         }
-        createObjProdutos();
 
     }
 
