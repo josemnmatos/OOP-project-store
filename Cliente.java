@@ -1,19 +1,13 @@
 import java.io.Serializable;
 
-public class Cliente implements Serializable{
+public class Cliente implements Serializable {
       private String nome;
       private Morada morada;
       private String email;
       private int telefone;
       private Data dataNascimento;
-      private boolean frequente;
 
-      public Cliente(){
-            
-      }
-
-
-      public Cliente(String nome, Morada morada, String email, int telefone, Data dataNascimento, boolean frequente) {
+      public Cliente(String nome, Morada morada, String email, int telefone, Data dataNascimento) {
             this.nome = nome;
             this.morada = morada;
             this.email = email;
@@ -23,23 +17,18 @@ public class Cliente implements Serializable{
             }
             this.telefone = telefone;
             this.dataNascimento = dataNascimento;
-            this.frequente = frequente;
       }
-
 
       @Override
       public String toString() {
             return "{" +
-                  " nome='" + getNome() + "'" +
-                  ", morada='" + getMorada().toString() + "'" +
-                  ", email='" + getEmail() + "'" +
-                  ", telefone='" + getTelefone() + "'" +
-                  ", dataNascimento='" + getDataNascimento().toString() + "'" +
-                  ", frequente='" + isFrequente() + "'" +
-                  "}";
+                        " nome='" + getNome() + "'" +
+                        ", morada='" + getMorada().toString() + "'" +
+                        ", email='" + getEmail() + "'" +
+                        ", telefone='" + getTelefone() + "'" +
+                        ", dataNascimento='" + getDataNascimento().toString() + "'" +
+                        "}";
       }
-
-      
 
       public String getNome() {
             return this.nome;
@@ -79,14 +68,6 @@ public class Cliente implements Serializable{
 
       public void setDataNascimento(Data dataNascimento) {
             this.dataNascimento = dataNascimento;
-      }
-
-      public void setFrequente(boolean frequente) {
-            this.frequente = frequente;
-      }
-
-      public boolean isFrequente() {
-            return this.frequente;
       }
 
 }

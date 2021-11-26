@@ -5,7 +5,6 @@ import java.io.*;
 public class App {
     // preencher no arranque ao ler dos ficheiros
     private ArrayList<Cliente> clientes = new ArrayList<>();
-    private ArrayList<Cliente> clientesObj = new ArrayList<>();
     private ArrayList<Produto> produtosMobiliario = new ArrayList<>();
     private ArrayList<Produto> produtosLimpeza = new ArrayList<>();
     private ArrayList<Produto> produtosAlimentar = new ArrayList<>();
@@ -48,7 +47,7 @@ public class App {
                 while (true) {
                     try {
                         Cliente client = (Cliente) ois.readObject();
-                        clientesObj.add(client);
+                        clientes.add(client);
                     } catch (EOFException e) {
                         ois.close();
                         break;
@@ -71,44 +70,22 @@ public class App {
                     String line;
                     Cliente c = null;
                     while ((line = br.readLine()) != null) {
+                        String[] detalhesCliente = line.split(",");
+                        String[] morada = detalhesCliente[2].split("/");
+                        Morada m = new Morada(morada[0], Integer.parseInt(morada[1]), Integer.parseInt(morada[2]));
+                        String[] data = detalhesCliente[5].split("/");
+                        Data d = new Data(Integer.parseInt(data[0]), Integer.parseInt(data[0]),
+                                Integer.parseInt(data[0]));
+                        if (detalhesCliente[0].equals("f")) {
+                            Cliente cRegular = new ClienteFrequente(detalhesCliente[1], m, detalhesCliente[3],
+                                    Integer.parseInt(detalhesCliente[4]), d);
+                            clientes.add(cRegular);
+                        } else {
+                            Cliente cFrequente = new Cliente(detalhesCliente[1], m, detalhesCliente[3],
+                                    Integer.parseInt(detalhesCliente[4]), d);
+                            clientes.add(cFrequente);
+                        }
 
-                        if (line.charAt(0) == '*') {
-                            c = new Cliente();
-                        }
-                        // frequente/regular
-                        else if (line.charAt(0) == '1') {
-                            c.setFrequente(line.charAt(2) == 'f');
-                        }
-                        // nome
-                        else if (line.charAt(0) == '2') {
-                            c.setNome(line.substring(2));
-
-                        }
-                        // morada
-                        else if (line.charAt(0) == '3') {
-                            String[] moradaPartes = line.substring(2).split(",");
-                            Morada m = new Morada(moradaPartes[0], Integer.parseInt(moradaPartes[1]),
-                                    Integer.parseInt(moradaPartes[2]));
-                            c.setMorada(m);
-
-                        }
-                        // email
-                        else if (line.charAt(0) == '4') {
-                            c.setEmail(line.substring(2));
-                        }
-                        // telefone
-                        else if (line.charAt(0) == '5') {
-                            c.setTelefone(Integer.parseInt(line.substring(2)));
-                        }
-                        // data de nascimento
-                        else if (line.charAt(0) == '6') {
-                            String[] dataPartes = line.substring(2).split("/");
-                            Data d = new Data(Integer.parseInt(dataPartes[0]), Integer.parseInt(dataPartes[1]),
-                                    Integer.parseInt(dataPartes[2]));
-                            c.setDataNascimento(d);
-                            // como é o ultimo parametro a ser preenchido, adiciona à lista de clientes
-                            clientes.add(c);
-                        }
                     }
                     br.close();
                 } catch (FileNotFoundException ex) {
@@ -153,7 +130,7 @@ public class App {
     // lista todos os clientes
     public void listaClientes() {
         System.out.println("\nClientes :");
-        for (Cliente c : clientesObj) {
+        for (Cliente c : clientes) {
             System.out.println(c);
         }
 
