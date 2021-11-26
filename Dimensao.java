@@ -16,16 +16,10 @@ public class Dimensao implements Serializable {
             }
       }
 
-
       @Override
       public String toString() {
-            return "{" +
-                  " altura='" + getAltura() + "'" +
-                  ", largura='" + getLargura() + "'" +
-                  ", profundidade='" + getProfundidade() + "'" +
-                  "}";
+            return "(" + this.altura + "m x " + this.largura + "m x " + this.profundidade + "m" + ")";
       }
-      
 
       public double getAltura() {
             return this.altura;

@@ -32,7 +32,11 @@ final public class Mobiliario extends Produto {
 
       @Override
       public String toString() {
-            return "{" + " peso='" + getPeso() + "'" + ", dimensao='" + getDimensao() + "'" + "}";
+            return "\nID: " + this.id
+                        + "\nProduto: " + this.nome
+                        + "\nPeso: "+this.peso
+                        +" Kg\nDimensões: "+this.dimensao.toString()
+                        + "\nPreço por unidade: " + this.precoUnitario
+                        + " euros\nStock: " + this.stock;
       }
-
 }

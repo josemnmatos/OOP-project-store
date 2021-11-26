@@ -2,7 +2,6 @@ final public class Alimentar extends Produto {
       private double kcalPor100g;
       private double percentagemGordura;
 
-
       public Alimentar(int id, String nome, double precoUnitario, int stock, double kcalPor100g,
                   double percentagemGordura) {
             super(id, nome, precoUnitario, stock);
@@ -20,7 +19,6 @@ final public class Alimentar extends Produto {
             }
       }
 
-
       public double getKcalPor100g() {
             return this.kcalPor100g;
       }
@@ -37,16 +35,14 @@ final public class Alimentar extends Produto {
             this.percentagemGordura = percentagemGordura;
       }
 
-
       @Override
       public String toString() {
-            return "{" +
-                  " kcalPor100g='" + getKcalPor100g() + "'" +
-                  ", percentagemGordura='" + getPercentagemGordura() + "'" +
-                  "}";
+            return "\nID: " + this.id
+                        + "\nProduto: " + this.nome
+                        + "\nA cada 100g: " + this.kcalPor100g
+                        + " kcal\nGordura: " + this.percentagemGordura * 100
+                        + " %\nPreço por unidade: " + this.precoUnitario
+                        + " euros\nStock: " + this.stock;
       }
-
-
-
 
 }

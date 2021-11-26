@@ -22,9 +22,11 @@ final public class Limpeza extends Produto {
 
       @Override
       public String toString() {
-            return "{" +
-                  " grauToxicidade='" + getGrauToxicidade() + "'" +
-                  "}";
+            return "\nID: " + this.id
+                        + "\nProduto: " + this.nome
+                        + "\nGrau de toxicidade: " + this.grauToxicidade
+                        + "\nPreço por unidade: " + this.precoUnitario
+                        + " euros\nStock: " + this.stock;
       }
 
 }
