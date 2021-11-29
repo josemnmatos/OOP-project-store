@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class Compra {
       private Cliente cliente;
+      private Data dataCompra;
       private ArrayList<ItemCompra> produtos = new ArrayList<>();
 
       public Compra(Cliente cliente, ArrayList<ItemCompra> produtos) {

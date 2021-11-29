@@ -335,17 +335,19 @@ public class App {
                 switch (option) {
 
                     case 1:
-                        System.out.print("Email-> ");
-                        Scanner em = new Scanner(System.in);
-                        String email = em.nextLine();
-                        for (Cliente c : gestor.clientes) {
-                            if (email.equals(c.getEmail())) {
-                                clienteAtivo = c;
-                                break;
+                        do {
+                            System.out.print("Email-> ");
+                            Scanner em = new Scanner(System.in);
+                            String email = em.nextLine();
+                            for (Cliente c : gestor.clientes) {
+                                if (email.equals(c.getEmail())) {
+                                    clienteAtivo = c;
+                                    loggedIn = true;
+                                    break;
+                                }
                             }
-                        }
+                        } while (loggedIn == false);
                         System.out.println("Log-in efetuado.\n");
-                        loggedIn = true;
                         break;
 
                     case 2:
