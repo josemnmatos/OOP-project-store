@@ -1,8 +1,11 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.ResourceBundle.Control;
 import java.io.*;
 
 public class App {
+    private Cliente clienteAtivo = null;
+    private Data dataAtual = new Data(21, 11, 2021);
     // preencher no arranque ao ler dos ficheiros
     private ArrayList<Cliente> clientes = new ArrayList<>();
     private ArrayList<Produto> produtosMobiliario = new ArrayList<>();
@@ -12,7 +15,6 @@ public class App {
 
     // lista de compras realizadas
     private ArrayList<Compra> comprasRealizadas = new ArrayList<>();
-    private Data dataAtual = new Data(21, 11, 2021);
 
     // DATA ATUAL
     public Data getDataAtual() {
@@ -36,6 +38,14 @@ public class App {
     }
 
     // CLIENTES
+    public Cliente getClienteAtivo() {
+        return clienteAtivo;
+    }
+
+    public void setClienteAtivo(Cliente c) {
+        clienteAtivo = c;
+    }
+
     public void parseClientes() {
         File obj = new File("clientes.obj");
         // verifica a existencia de ficheiro de objetos
@@ -316,6 +326,15 @@ public class App {
         }
     }
 
+    public void realizarCompra() {
+        ArrayList<ItemCompra> produtos = new ArrayList<>();
+
+        // realiza nova compra com cliente e data atuais
+        Compra c = new Compra(clienteAtivo, produtos, dataAtual);
+        comprasRealizadas.add(c);
+
+    }
+
     public static void main(String[] args) {
 
         App gestor = new App();
@@ -332,27 +351,33 @@ public class App {
                 System.out.println(gestor.getDataAtual());
                 System.out.println("1) Fazer log-in\n2) Terminar programa");
                 int option = sc.nextInt();
+
                 switch (option) {
 
                     case 1:
-                        do {
-                            System.out.print("Email-> ");
-                            Scanner em = new Scanner(System.in);
-                            String email = em.nextLine();
-                            for (Cliente c : gestor.clientes) {
-                                if (email.equals(c.getEmail())) {
-                                    clienteAtivo = c;
-                                    loggedIn = true;
-                                    break;
-                                }
+                        System.out.print("Email-> ");
+                        Scanner em = new Scanner(System.in);
+                        String email = em.nextLine();
+                        for (Cliente c : gestor.clientes) {
+                            if (email.equals(c.getEmail())) {
+                                clienteAtivo = c;
+                                loggedIn = true;
+                                break;
                             }
-                        } while (loggedIn == false);
-                        System.out.println("Log-in efetuado.\n");
+                        }
+                        if (loggedIn == true) {
+                            System.out.println("Log-in efetuado.\n");
+                            break;
+                        }
+                        System.out.println("Email inválido.");
                         break;
 
                     case 2:
                         sc.close();
                         System.exit(1);
+
+                    default:
+                        System.out.println("Operação inválida.");
 
                 }
 
@@ -370,6 +395,7 @@ public class App {
                 System.out.println(
                         "\n1) Realizar compra\n2) Compras realizadas\n3) Mudar data atual\n4) Log-out\n5) Terminar programa");
                 int option = sc.nextInt();
+
                 switch (option) {
 
                     case 1:
@@ -388,8 +414,10 @@ public class App {
                         sc.close();
                         System.exit(1);
 
-                }
+                    default:
+                        System.out.println("Operação inválida.");
 
+                }
             }
 
         }

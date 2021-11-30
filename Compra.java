@@ -5,8 +5,9 @@ public class Compra {
       private Data dataCompra;
       private ArrayList<ItemCompra> produtos = new ArrayList<>();
 
-      public Compra(Cliente cliente, ArrayList<ItemCompra> produtos) {
+      public Compra(Cliente cliente, ArrayList<ItemCompra> produtos, Data dataCompra) {
             this.cliente = cliente;
+            this.dataCompra = dataCompra;
             this.produtos = produtos;
       }
 
