@@ -1,4 +1,6 @@
-public class ItemCompra {
+import java.io.Serializable;
+
+public class ItemCompra implements Serializable {
       private Produto produto;
       private int quantidade;
 
@@ -24,5 +26,15 @@ public class ItemCompra {
       public void setQuantidade(int quantidade) {
             this.quantidade = quantidade;
       }
+
+
+      @Override
+      public String toString() {
+            return "{" +
+                  " produto='" + getProduto() + "'" +
+                  ", quantidade='" + getQuantidade() + "'" +
+                  "}";
+      }
+
 
 }

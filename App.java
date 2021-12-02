@@ -3,7 +3,7 @@ import java.util.Scanner;
 import java.io.*;
 
 public class App {
-    private Cliente clienteAtivo = null;
+    private Cliente clienteAtivo;
     private Data dataAtual = new Data(21, 11, 2021);
     // preencher no arranque ao ler dos ficheiros
     private ArrayList<Cliente> clientes = new ArrayList<>();
@@ -46,7 +46,7 @@ public class App {
         clienteAtivo = c;
     }
 
-    public void parseClientes() {
+    private void parseClientes() {
         File obj = new File("clientes.obj");
         // verifica a existencia de ficheiro de objetos
         if (obj.exists() && obj.isFile()) {
@@ -146,7 +146,7 @@ public class App {
     }
 
     // PRODUTOS
-    public void parseProdutos() {
+    private void parseProdutos() {
         File objM = new File("produtosMobiliario.obj");
         File objL = new File("produtosLimpeza.obj");
         File objA = new File("produtosAlimentar.obj");
@@ -340,6 +340,33 @@ public class App {
     }
 
     // COMPRA
+    private void parseCompras() {
+        File obj = new File("compras.obj");
+        if (obj.exists() && obj.isFile()) {
+            try {
+                FileInputStream fis = new FileInputStream(obj);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                while (true) {
+                    try {
+                        Compra c = (Compra) ois.readObject();
+                        comprasRealizadas.add(c);
+                        System.out.println(c);
+                    } catch (EOFException e) {
+                        ois.close();
+                        break;
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                System.err.println("Erro a abrir ficheiro.");
+            } catch (IOException ex) {
+                System.err.println("Erro a ler ficheiro.");
+
+            } catch (ClassNotFoundException ex) {
+                System.err.println("Erro a converter objeto.");
+            }
+        }
+    }
+
     public void realizarCompra() {
         ArrayList<ItemCompra> produtosCompra = new ArrayList<>();
         Compra c = new Compra(clienteAtivo, produtosCompra, dataAtual);
@@ -350,7 +377,6 @@ public class App {
             Scanner sc = new Scanner(System.in);
             int option = sc.nextInt();
             switch (option) {
-
 
                 case 1:
                     // adicionar produto
@@ -371,7 +397,7 @@ public class App {
                         quantidade = sc.nextInt();
                     } while (quantidade > produtoAtivo.stock);
                     // remove stock
-                    produtoAtivo.stock = produtoAtivo.stock-quantidade;
+                    produtoAtivo.stock = produtoAtivo.stock - quantidade;
                     // esgotado
                     if (produtoAtivo.stock == 0) {
                         produtosDisponiveis.remove(produtoAtivo);
@@ -379,8 +405,6 @@ public class App {
                     c.adicionarProduto(produtoAtivo, quantidade);
                     System.out.println("Produto adicionado ao carrinho.");
                     break;
-
-
 
                 case 2:
                     // remover produto
@@ -402,19 +426,26 @@ public class App {
                     } while (quantidade > item.getQuantidade());
                     c.removerProduto(item.getProduto(), quantidade);
 
-                    //adicionar stock
+                    // adicionar stock
 
                     System.out.println("Produto removido do carrinho.");
                     break;
 
                 case 3:
                     // mostrar carrinho
+                    System.out.println("Carrinho:\n");
+                    for (ItemCompra i : c.getLista()) {
+                        System.out.format("%-3d %-20s %-5f\n\n", i.getQuantidade(), i.getProduto().getNome(),
+                                i.getProduto().getPrecoUnitario());
+                    }
+                    break;
 
                 case 4:
                     // checkout
                     // realiza nova compra com cliente e data atuais
                     comprasRealizadas.add(c);
-                    break;
+                    updateCompraObj(c);
+                    return;
                 default:
                     System.out.println("Operação inválida.");
 
@@ -422,16 +453,39 @@ public class App {
         }
     }
 
+    private void updateCompraObj(Compra c) {
+        File f = new File("compras.obj");
+        try {
+            FileOutputStream fos = new FileOutputStream(f, true);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(c);
+            oos.close();
+        } catch (FileNotFoundException ex) {
+            System.err.println("Erro a criar ficheiro.");
+        } catch (IOException ex) {
+            System.err.println("Erro a escrever para o ficheiro.");
+        }
+
+    }
+
+    public void inicializar() {
+        parseClientes();
+        parseProdutos();
+        parseCompras();
+        //
+        juntaProdutos();
+        //
+    }
+
+    public void divisoria() {
+        System.out.println("-------------------------");
+    }
+
     public static void main(String[] args) {
 
         App gestor = new App();
 
-        gestor.parseClientes();
-        gestor.parseProdutos();
-
-        //
-        gestor.juntaProdutos();
-        //
+        gestor.inicializar();
 
         boolean loggedIn = false;
         while (true) {
@@ -439,13 +493,17 @@ public class App {
             Cliente clienteAtivo = null;
             Scanner sc = new Scanner(System.in);
             while (loggedIn == false) {
+                gestor.divisoria();
                 System.out.println(gestor.getDataAtual());
-                System.out.println("1) Fazer log-in\n2) Terminar programa");
+                System.out.println("1) Fazer log-in\n2) Terminar programa\n");
+                gestor.divisoria();
+                System.out.print("Opção-> ");
                 int option = sc.nextInt();
 
                 switch (option) {
 
                     case 1:
+                        gestor.divisoria();
                         System.out.print("Email-> ");
                         Scanner em = new Scanner(System.in);
                         String email = em.nextLine();
@@ -458,6 +516,7 @@ public class App {
                         }
                         if (loggedIn == true) {
                             System.out.println("Log-in efetuado.\n");
+                            gestor.divisoria();
                             break;
                         }
                         System.out.println("Email inválido.");
@@ -475,6 +534,7 @@ public class App {
             }
 
             while (loggedIn == true) {
+                gestor.divisoria();
                 System.out.println("Bem-vindo, " + clienteAtivo.getNome() + ".");
                 // easter egg
                 if (clienteAtivo.getDataNascimento().getDia() == gestor.getDataAtual().getDia()
@@ -483,8 +543,11 @@ public class App {
                     System.out.println("FELIZ ANIVERSÁRIO! "
                             + (gestor.getDataAtual().getAno() - clienteAtivo.getDataNascimento().getAno()) + "!\n");
                 }
+                gestor.divisoria();
                 System.out.println(
-                        "\n1) Realizar compra\n2) Compras realizadas\n3) Mudar data atual\n4) Log-out\n5) Terminar programa");
+                        "1) Realizar compra\n2) Compras realizadas\n3) Mudar data atual\n4) Log-out\n5) Terminar programa\n");
+                gestor.divisoria();
+                System.out.print("Opção-> ");
                 int option = sc.nextInt();
 
                 switch (option) {
@@ -494,6 +557,14 @@ public class App {
                         gestor.realizarCompra();
                         break;
                     case 2:
+                        for (Compra c : gestor.comprasRealizadas) {
+                            if (c.getCliente() == clienteAtivo) {
+                                gestor.divisoria();
+                                c.mostraCompra();
+                                gestor.divisoria();
+                            }
+                        }
+                        break;
 
                     case 3:
                         gestor.mudaDataAtual();
@@ -501,6 +572,7 @@ public class App {
                         break;
                     case 4:
                         System.out.println("Log-out efetuado.\n");
+                        gestor.divisoria();
                         loggedIn = false;
                         break;
                     case 5:

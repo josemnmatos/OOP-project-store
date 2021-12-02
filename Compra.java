@@ -1,7 +1,11 @@
+import java.io.Serializable;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Compra {
+import javax.swing.plaf.synth.SynthStyleFactory;
+
+public class Compra implements Serializable {
       private Cliente cliente;
       private Data dataCompra;
       private ArrayList<ItemCompra> listaProduto = new ArrayList<>();
@@ -37,8 +41,23 @@ public class Compra {
 
       }
 
+      public Cliente getCliente(){
+            return this.cliente;
+      }     
+
       public ArrayList<ItemCompra> getLista(){
             return listaProduto;
       }
+
+      public void mostraCompra(){
+            System.out.println("Cliente: "+this.cliente+
+                              "\nData: "+this.dataCompra+
+                              "\nProdutos:");
+            for(ItemCompra i:this.listaProduto){
+                  System.out.format("%-3d %-20s %-5f\n", i.getQuantidade(), i.getProduto().getNome(),
+                                i.getProduto().getPrecoUnitario());
+            }
+      }
+
 
 }

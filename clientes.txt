@@ -2,4 +2,4 @@ r,Gilberto,Rua do pau/32/3000100,gilbertodistreet@sapo.pt,961818638,22/10/1993
 f,GOAT Manafa,Rua da street/31/3020100,mandistreet@sapo.pt,961818918,21/1/1996
 f,Marega,Rua da street/31/3020100,maregadistreet@sapo.pt,961818699,1/1/2345
 r,Pote,Rua da ruelz/90/1090100,potebestmarcador@iol.pt,917768944,2/2/1999
-f,GrimalGod,Rua da trivela/37/3080400,soumaquina@hotmail.edu,961890233,7/9/1997
+f,GrimalGod,Rua da trivela/37/3080400,a,961890233,7/9/1997
