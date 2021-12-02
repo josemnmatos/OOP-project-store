@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.ResourceBundle.Control;
 import java.io.*;
 
 public class App {
@@ -11,6 +10,7 @@ public class App {
     private ArrayList<Produto> produtosMobiliario = new ArrayList<>();
     private ArrayList<Produto> produtosLimpeza = new ArrayList<>();
     private ArrayList<Produto> produtosAlimentar = new ArrayList<>();
+    private ArrayList<Produto> produtosDisponiveis = new ArrayList<>();
     private ArrayList<Promocao> promocoesAtivas = new ArrayList<>();
 
     // lista de compras realizadas
@@ -326,13 +326,103 @@ public class App {
         }
     }
 
+    // *junta produtos*
+    public void juntaProdutos() {
+        for (Produto p : produtosAlimentar) {
+            produtosDisponiveis.add(p);
+        }
+        for (Produto p : produtosMobiliario) {
+            produtosDisponiveis.add(p);
+        }
+        for (Produto p : produtosLimpeza) {
+            produtosDisponiveis.add(p);
+        }
+    }
+
+    // COMPRA
     public void realizarCompra() {
-        ArrayList<ItemCompra> produtos = new ArrayList<>();
+        ArrayList<ItemCompra> produtosCompra = new ArrayList<>();
+        Compra c = new Compra(clienteAtivo, produtosCompra, dataAtual);
+        while (true) {
+            System.out.println(
+                    "1) Adicionar produto\n2) Remover produto\n3) Carrinho de compras\n4) Checkout\n\nCusto atual-> "
+                            + c.custoAtual() + "euros");
+            Scanner sc = new Scanner(System.in);
+            int option = sc.nextInt();
+            switch (option) {
 
-        // realiza nova compra com cliente e data atuais
-        Compra c = new Compra(clienteAtivo, produtos, dataAtual);
-        comprasRealizadas.add(c);
 
+                case 1:
+                    // adicionar produto
+                    Produto produtoAtivo = null;
+                    // produto
+                    int index=0;
+                    do {
+                        System.out.print("Indique ID do produto a adicionar: ");
+                        int idProduto = sc.nextInt();
+                        for (Produto p : produtosDisponiveis) {
+                            if (p.id == idProduto) {
+                                produtoAtivo = p;
+                                index=produtosDisponiveis.indexOf(p);
+                            }
+                        }
+                    } while (produtoAtivo == null);
+                    // quantidade
+                    int quantidade;
+                    do {
+                        System.out.print("Quantidade a adicionar: ");
+                        quantidade = sc.nextInt();
+                    } while (quantidade > produtoAtivo.stock);
+                    // remove stock
+                    produtosDisponiveis
+                    // esgotado
+                    if (produtoAtivo.stock == 0) {
+                        produtosDisponiveis.remove(produtoAtivo);
+                    }
+                    c.adicionarProduto(produtoAtivo, quantidade);
+                    System.out.println("Produto adicionado ao carrinho.");
+                    break;
+
+
+
+                case 2:
+                    // remover produto
+                    ItemCompra item = null;
+
+                    do {
+                        System.out.print("Indique ID do produto a remover: ");
+                        int idProduto = sc.nextInt();
+                        for (ItemCompra i : c.getLista()) {
+                            if (i.getProduto().getId() == idProduto) {
+                                item = i;
+                            }
+                        }
+                    } while (item == null);
+                    // quantidade
+                    do {
+                        System.out.print("Quantidade a remover: ");
+                        quantidade = sc.nextInt();
+                    } while (quantidade > item.getQuantidade());
+                    c.removerProduto(item.getProduto(), quantidade);
+
+                    //adicionar stock
+
+                    System.out.println("Produto removido do carrinho.");
+                    break;
+
+                case 3:
+                    // mostrar carrinho
+
+                case 4:
+                    // checkout
+                    // realiza nova compra com cliente e data atuais
+                    comprasRealizadas.add(c);
+                    break;
+                default:
+                    System.out.println("Operação inválida.");
+
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -341,6 +431,10 @@ public class App {
 
         gestor.parseClientes();
         gestor.parseProdutos();
+
+        //
+        gestor.juntaProdutos();
+        //
 
         boolean loggedIn = false;
         while (true) {
@@ -399,7 +493,9 @@ public class App {
                 switch (option) {
 
                     case 1:
-
+                        // Realizar Compra
+                        gestor.realizarCompra();
+                        break;
                     case 2:
 
                     case 3:

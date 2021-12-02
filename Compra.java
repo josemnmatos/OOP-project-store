@@ -3,17 +3,40 @@ import java.util.ArrayList;
 public class Compra {
       private Cliente cliente;
       private Data dataCompra;
-      private ArrayList<ItemCompra> produtos = new ArrayList<>();
+      private ArrayList<ItemCompra> listaProduto = new ArrayList<>();
 
-      public Compra(Cliente cliente, ArrayList<ItemCompra> produtos, Data dataCompra) {
+      public Compra(Cliente cliente, ArrayList<ItemCompra> listaProduto, Data dataCompra) {
             this.cliente = cliente;
             this.dataCompra = dataCompra;
-            this.produtos = produtos;
+            this.listaProduto = listaProduto;
       }
 
-      public void adicionaProduto(Produto produto, int quantidade) {
-            ItemCompra item = new ItemCompra(produto, quantidade);
-            this.produtos.add(item);
+      public double custoAtual() {
+            double custo = 0;
+            for (ItemCompra item : listaProduto) {
+                  custo += item.getProduto().getPrecoUnitario() * item.getQuantidade();
+            }
+            return custo;
+      }
+
+      public void adicionarProduto(Produto p, int quantidade) {
+            listaProduto.add(new ItemCompra(p, quantidade));
+      }
+
+      public void removerProduto(Produto p, int quantidade) {
+            for (ItemCompra item : listaProduto) {
+                  if (item.getProduto().getId() == p.id) {
+                        item.setQuantidade(item.getQuantidade() - quantidade);
+                        if (item.getQuantidade() == 0) {
+                              listaProduto.remove(item);
+                        }
+                  }
+            }
+
+      }
+
+      public ArrayList<ItemCompra> getLista(){
+            return listaProduto;
       }
 
 }
