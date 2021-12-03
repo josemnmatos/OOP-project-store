@@ -53,15 +53,11 @@ public class App {
             try {
                 FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
-                while (true) {
-                    try {
-                        Cliente client = (Cliente) ois.readObject();
-                        clientes.add(client);
+                try {
+                        clientes = (ArrayList<Cliente>) ois.readObject();
                     } catch (EOFException e) {
                         ois.close();
-                        break;
                     }
-                }
             } catch (FileNotFoundException ex) {
                 System.err.println("Erro a abrir ficheiro.");
             } catch (IOException ex) {
@@ -125,9 +121,7 @@ public class App {
         try {
             FileOutputStream fos = new FileOutputStream(f, true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            for (Cliente i : clientes) {
-                oos.writeObject(i);
-            }
+            oos.writeObject(clientes);
             oos.close();
         } catch (FileNotFoundException ex) {
             System.err.println("Erro a criar ficheiro.");
@@ -147,24 +141,20 @@ public class App {
 
     // PRODUTOS
     private void parseProdutos() {
-        File objM = new File("produtosMobiliario.obj");
-        File objL = new File("produtosLimpeza.obj");
-        File objA = new File("produtosAlimentar.obj");
+        File obj= new File("produtos.obj");
+        
         // verifica a existencia de ficheiro de objetos
-        if (objM.exists() && objM.isFile() && objL.exists() && objL.isFile() && objA.exists() && objA.isFile()) {
+        if (obj.exists() && obj.isFile()) {
             try {
                 // le mobiliario
-                FileInputStream fis = new FileInputStream(objM);
+                FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
-                while (true) {
-                    try {
-                        Mobiliario p = (Mobiliario) ois.readObject();
-                        produtosMobiliario.add(p);
-                    } catch (EOFException e) {
-                        ois.close();
-                        break;
-                    }
+                try {
+                    produtosDisponiveis = (ArrayList<Produto>) ois.readObject();
+                } catch (EOFException e) {
+                    ois.close();
                 }
+                
             } catch (FileNotFoundException ex) {
                 System.err.println("Erro a abrir ficheiro.");
             } catch (IOException ex) {
@@ -172,47 +162,8 @@ public class App {
             } catch (ClassNotFoundException ex) {
                 System.err.println("Erro a converter objeto.");
             }
-            // le limpeza
-            try {
-                FileInputStream fis = new FileInputStream(objL);
-                ObjectInputStream ois = new ObjectInputStream(fis);
-                while (true) {
-                    try {
-                        Limpeza p = (Limpeza) ois.readObject();
-                        produtosLimpeza.add(p);
-                    } catch (EOFException e) {
-                        ois.close();
-                        break;
-                    }
-                }
-            } catch (FileNotFoundException ex) {
-                System.err.println("Erro a abrir ficheiro.");
-            } catch (IOException ex) {
-                System.err.println("Erro a ler ficheiro.");
-            } catch (ClassNotFoundException ex) {
-                System.err.println("Erro a converter objeto.");
-            }
-            // le alimentar
-            try {
-                FileInputStream fis = new FileInputStream(objA);
-                ObjectInputStream ois = new ObjectInputStream(fis);
-                while (true) {
-                    try {
-                        Alimentar p = (Alimentar) ois.readObject();
-                        produtosAlimentar.add(p);
-                    } catch (EOFException e) {
-                        ois.close();
-                        break;
-                    }
-                }
-            } catch (FileNotFoundException ex) {
-                System.err.println("Erro a abrir ficheiro.");
-            } catch (IOException ex) {
-                System.err.println("Erro a ler ficheiro.");
-            } catch (ClassNotFoundException ex) {
-                System.err.println("Erro a converter objeto.");
-            }
-        } else {
+        }
+             else {
             File f = new File("produtos.txt");
             if (f.exists() && f.isFile()) {
                 try {
@@ -231,7 +182,7 @@ public class App {
                             Mobiliario p = new Mobiliario(Integer.parseInt(detalhesProduto[1]), detalhesProduto[2],
                                     Double.parseDouble(detalhesProduto[3]), Integer.parseInt(detalhesProduto[4]), peso,
                                     d);
-                            produtosMobiliario.add(p);
+                            produtosDisponiveis.add(p);
 
                         } else if (detalhesProduto[0].equals("limpeza")) {
                             int grauToxicidade = Integer.parseInt(detalhesProduto[5]);
@@ -239,7 +190,7 @@ public class App {
                             Limpeza p = new Limpeza(Integer.parseInt(detalhesProduto[1]), detalhesProduto[2],
                                     Double.parseDouble(detalhesProduto[3]), Integer.parseInt(detalhesProduto[4]),
                                     grauToxicidade);
-                            produtosLimpeza.add(p);
+                            produtosDisponiveis.add(p);
 
                         } else if (detalhesProduto[0].equals("alimentar")) {
                             double kcal = Double.parseDouble(detalhesProduto[5]);
@@ -248,7 +199,7 @@ public class App {
                             Alimentar p = new Alimentar(Integer.parseInt(detalhesProduto[1]), detalhesProduto[2],
                                     Double.parseDouble(detalhesProduto[3]), Integer.parseInt(detalhesProduto[4]), kcal,
                                     percentagemGordura);
-                            produtosAlimentar.add(p);
+                            produtosDisponiveis.add(p);
 
                         } else {
                             System.out.println("Erro: Produto inválido.");
@@ -269,75 +220,29 @@ public class App {
 
     // guarda valores da lista de produtos no ficheiro de objetos
     private void createObjProdutos() {
-        File f = new File("produtosMobiliario.obj");
+        File f = new File("produtos.obj");
         try {
             FileOutputStream fos = new FileOutputStream(f, true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            for (Produto p : produtosMobiliario) {
-                oos.writeObject(p);
-            }
+            oos.writeObject(produtosDisponiveis);
             oos.close();
         } catch (FileNotFoundException ex) {
             System.err.println("Erro a criar ficheiro.");
         } catch (IOException ex) {
             System.err.println("Erro a escrever para o ficheiro.");
         }
-        f = new File("produtosLimpeza.obj");
-        try {
-            FileOutputStream fos = new FileOutputStream(f, true);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            for (Produto p : produtosLimpeza) {
-                oos.writeObject(p);
-            }
-            oos.close();
-        } catch (FileNotFoundException ex) {
-            System.err.println("Erro a criar ficheiro.");
-        } catch (IOException ex) {
-            System.err.println("Erro a escrever para o ficheiro.");
-        }
-        f = new File("produtosAlimentar.obj");
-        try {
-            FileOutputStream fos = new FileOutputStream(f, true);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            for (Produto p : produtosAlimentar) {
-                oos.writeObject(p);
-            }
-            oos.close();
-        } catch (FileNotFoundException ex) {
-            System.err.println("Erro a criar ficheiro.");
-        } catch (IOException ex) {
-            System.err.println("Erro a escrever para o ficheiro.");
-        }
+       
     }
 
     // lista todos os produtos
     public void listaProdutos() {
-        System.out.println("\nProdutos :\nMobiliário: ");
-        for (Produto p : produtosMobiliario) {
-            System.out.println(p);
-        }
-        System.out.println("\nLimpeza: ");
-        for (Produto p : produtosLimpeza) {
-            System.out.println(p);
-        }
-        System.out.println("\nAlimentares: ");
-        for (Produto p : produtosAlimentar) {
+        System.out.println("\nProdutos : ");
+        for (Produto p : produtosDisponiveis) {
             System.out.println(p);
         }
     }
 
-    // *junta produtos*
-    public void juntaProdutos() {
-        for (Produto p : produtosAlimentar) {
-            produtosDisponiveis.add(p);
-        }
-        for (Produto p : produtosMobiliario) {
-            produtosDisponiveis.add(p);
-        }
-        for (Produto p : produtosLimpeza) {
-            produtosDisponiveis.add(p);
-        }
-    }
+    
 
     // COMPRA
     private void parseCompras() {
@@ -346,8 +251,12 @@ public class App {
             try {
                 FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
-                
-                    comprasRealizadas = (ArrayList<Compra>) ois.readObject();
+                try{
+                comprasRealizadas = (ArrayList<Compra>) ois.readObject();
+                }
+                catch(EOFException e){
+                    ois.close();
+                }
                 
             } catch (FileNotFoundException ex) {
                 System.err.println("Erro a abrir ficheiro.");
@@ -493,7 +402,7 @@ public class App {
         parseProdutos();
         parseCompras();
         //
-        juntaProdutos();
+        //juntaProdutos();
         //
     }
 
