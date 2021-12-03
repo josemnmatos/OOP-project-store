@@ -34,9 +34,18 @@ final public class Mobiliario extends Produto {
       public String toString() {
             return "\nID: " + this.id
                         + "\nProduto: " + this.nome
-                        + "\nPeso: "+this.peso
-                        +" Kg\nDimensões: "+this.dimensao.toString()
+                        + "\nPeso: " + this.peso
+                        + " Kg\nDimensões: " + this.dimensao.toString()
                         + "\nPreço por unidade: " + this.precoUnitario
                         + " euros\nStock: " + this.stock;
+      }
+
+      @Override
+      public double custosAdicionais() {
+            if (this.peso > 15) {
+                  return 10;
+            } else {
+                  return 0;
+            }
       }
 }

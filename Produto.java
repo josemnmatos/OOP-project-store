@@ -66,7 +66,9 @@ public abstract class Produto implements Serializable {
             this.stock = stock;
       }
 
-
+      public double custosAdicionais(){
+            return 0;
+      }
 
       @Override
       public String toString() {

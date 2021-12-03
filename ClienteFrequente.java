@@ -4,4 +4,12 @@ public class ClienteFrequente extends Cliente {
             super(nome, morada, email, telefone, dataNascimento);
       }
 
+      public double  custoPortes(double custoAtual){
+            if(custoAtual>40){
+                  return 0;
+            }else{
+                  return 15;
+            }
+      }
+
 }

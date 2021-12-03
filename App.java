@@ -350,7 +350,6 @@ public class App {
                     try {
                         Compra c = (Compra) ois.readObject();
                         comprasRealizadas.add(c);
-                        System.out.println(c);
                     } catch (EOFException e) {
                         ois.close();
                         break;
@@ -367,9 +366,9 @@ public class App {
         }
     }
 
-    public void realizarCompra() {
+    public void realizarCompra(Cliente cliente) {
         ArrayList<ItemCompra> produtosCompra = new ArrayList<>();
-        Compra c = new Compra(clienteAtivo, produtosCompra, dataAtual);
+        Compra c = new Compra(cliente, produtosCompra, dataAtual);
         while (true) {
             System.out.println(
                     "1) Adicionar produto\n2) Remover produto\n3) Carrinho de compras\n4) Checkout\n\nCusto atual-> "
@@ -441,11 +440,31 @@ public class App {
                     break;
 
                 case 4:
+                    if(c.getLista().isEmpty()){
+                        System.out.println("Carrinho vazio.");
+                        break;
+                    }
                     // checkout
                     // realiza nova compra com cliente e data atuais
-                    comprasRealizadas.add(c);
-                    updateCompraObj(c);
-                    return;
+                    divisoria();
+                    System.out.println("Custo       : " + c.custoAtual());
+                    System.out.println("Portes      : " + (c.custoFinal() - c.custoAtual()));
+                    System.out.println("Custo Final : " + c.custoFinal());
+                    System.out.println("Pretende confirmar a compra?\n1) Sim\n2) Não");
+                    while (true) {
+                        System.out.println("Opção-> ");
+                        option = sc.nextInt();
+                        if (option == 1) {
+                            divisoria();
+                            comprasRealizadas.add(c);
+                            updateCompraObj(c);
+                            return;
+                        } else if (option == 2) {
+                            divisoria();
+                            break;
+                        }
+                    }
+
                 default:
                     System.out.println("Operação inválida.");
 
@@ -554,7 +573,7 @@ public class App {
 
                     case 1:
                         // Realizar Compra
-                        gestor.realizarCompra();
+                        gestor.realizarCompra(clienteAtivo);
                         break;
                     case 2:
                         for (Compra c : gestor.comprasRealizadas) {

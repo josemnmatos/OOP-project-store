@@ -68,4 +68,8 @@ public class Cliente implements Serializable {
             this.dataNascimento = dataNascimento;
       }
 
+      public double custoPortes(double custoAtual) {
+            return 20;
+      }
+
 }
