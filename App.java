@@ -346,15 +346,9 @@ public class App {
             try {
                 FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
-                while (true) {
-                    try {
-                        Compra c = (Compra) ois.readObject();
-                        comprasRealizadas.add(c);
-                    } catch (EOFException e) {
-                        ois.close();
-                        break;
-                    }
-                }
+                
+                    comprasRealizadas = (ArrayList<Compra>) ois.readObject();
+                
             } catch (FileNotFoundException ex) {
                 System.err.println("Erro a abrir ficheiro.");
             } catch (IOException ex) {
@@ -440,7 +434,7 @@ public class App {
                     break;
 
                 case 4:
-                    if(c.getLista().isEmpty()){
+                    if (c.getLista().isEmpty()) {
                         System.out.println("Carrinho vazio.");
                         break;
                     }
@@ -457,7 +451,7 @@ public class App {
                         if (option == 1) {
                             divisoria();
                             comprasRealizadas.add(c);
-                            updateCompraObj(c);
+                            updateCompraObj();
                             return;
                         } else if (option == 2) {
                             divisoria();
@@ -472,12 +466,19 @@ public class App {
         }
     }
 
-    private void updateCompraObj(Compra c) {
+    private void updateCompraObj() {
+        try {
+            new FileOutputStream("compras.obj").close();
+        } catch (FileNotFoundException ex) {
+            System.err.println("Erro a criar ficheiro.");
+        } catch (IOException ex) {
+            System.err.println("Erro a escrever para o ficheiro.");
+        }
         File f = new File("compras.obj");
         try {
             FileOutputStream fos = new FileOutputStream(f, true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(c);
+            oos.writeObject(comprasRealizadas);
             oos.close();
         } catch (FileNotFoundException ex) {
             System.err.println("Erro a criar ficheiro.");
@@ -577,7 +578,7 @@ public class App {
                         break;
                     case 2:
                         for (Compra c : gestor.comprasRealizadas) {
-                            if (c.getCliente() == clienteAtivo) {
+                            if (c.getCliente().getNome().equals(clienteAtivo.getNome())) {
                                 gestor.divisoria();
                                 c.mostraCompra();
                                 gestor.divisoria();
