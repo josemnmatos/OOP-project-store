@@ -236,9 +236,9 @@ public class App {
 
     // lista todos os produtos
     public void listaProdutos() {
-        System.out.println("\nProdutos : ");
+        System.out.format("%-3s %-20s %-5s %-5s\n\n","ID","Produto","Preço","Stock");
         for (Produto p : produtosDisponiveis) {
-            System.out.println(p);
+            System.out.format("%-3d %-20s %4.2f %-5d\n\n",p.getId(),p.getNome(),p.getPrecoUnitario(),p.getStock());
         }
         System.out.println("\n");
     }
@@ -344,6 +344,7 @@ public class App {
                     break;
                 case 4: 
                     listaProdutos();
+                    break;
                 case 5:
                     if (c.getLista().isEmpty()) {
                         System.out.println("Carrinho vazio.");
