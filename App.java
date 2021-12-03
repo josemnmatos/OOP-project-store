@@ -240,6 +240,7 @@ public class App {
         for (Produto p : produtosDisponiveis) {
             System.out.println(p);
         }
+        System.out.println("\n");
     }
 
     
@@ -274,7 +275,7 @@ public class App {
         Compra c = new Compra(cliente, produtosCompra, dataAtual);
         while (true) {
             System.out.println(
-                    "1) Adicionar produto\n2) Remover produto\n3) Carrinho de compras\n4) Checkout\n\nCusto atual-> "
+                    "1) Adicionar produto\n2) Remover produto\n3) Carrinho de compras\n4) Produtos disponíveis\n5) Checkout\n\nCusto atual-> "
                             + c.custoAtual() + "euros");
             Scanner sc = new Scanner(System.in);
             int option = sc.nextInt();
@@ -341,8 +342,9 @@ public class App {
                                 i.getProduto().getPrecoUnitario());
                     }
                     break;
-
-                case 4:
+                case 4: 
+                    listaProdutos();
+                case 5:
                     if (c.getLista().isEmpty()) {
                         System.out.println("Carrinho vazio.");
                         break;
