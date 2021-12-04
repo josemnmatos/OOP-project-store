@@ -12,6 +12,13 @@ public class App {
 
     // lista de compras realizadas
     private ArrayList<Compra> comprasRealizadas = new ArrayList<>();
+    
+    //scanner
+    Scanner scanner = new Scanner(System.in);
+    public int scanInt(){
+        int input = scanner.nextInt();
+        return input;
+    }
 
     // DATA ATUAL
     public Data getDataAtual() {
@@ -19,15 +26,15 @@ public class App {
     }
 
     public void mudaDataAtual() {
-        Scanner sc = new Scanner(System.in);
         int dia, mes, ano;
         do {
             System.out.println("Dia: ");
-            dia = sc.nextInt();
+    
+            dia = scanInt();
             System.out.println("Mês: ");
-            mes = sc.nextInt();
+            mes = scanInt();
             System.out.println("Ano: ");
-            ano = sc.nextInt();
+            ano = scanInt();
         } while (dia < 1 || dia >= 32 || mes < 1 || mes >= 13);
         dataAtual.setDia(dia);
         dataAtual.setMes(mes);
@@ -70,7 +77,6 @@ public class App {
                     FileReader fr = new FileReader(f);
                     BufferedReader br = new BufferedReader(fr);
                     String line;
-                    Cliente c = null;
                     while ((line = br.readLine()) != null) {
                         String[] detalhesCliente = line.split(",");
                         String[] morada = detalhesCliente[2].split("/");
@@ -274,8 +280,8 @@ public class App {
             System.out.println(
                     "1) Adicionar produto\n2) Remover produto\n3) Carrinho de compras\n4) Produtos disponíveis\n5) Checkout\n\nCusto atual-> "
                             + c.custoAtual() + "euros");
-            Scanner sc = new Scanner(System.in);
-            int option = sc.nextInt();
+            
+            int option = scanInt();
             switch (option) {
 
                 case 1:
@@ -283,7 +289,7 @@ public class App {
                     Produto produtoAtivo = null;
                     do {
                         System.out.print("Indique ID do produto a adicionar: ");
-                        int idProduto = sc.nextInt();
+                        int idProduto = scanInt();
                         for (Produto p : produtosDisponiveis) {
                             if (p.id == idProduto) {
                                 produtoAtivo = p;
@@ -294,7 +300,7 @@ public class App {
                     int quantidade;
                     do {
                         System.out.print("Quantidade a adicionar: ");
-                        quantidade = sc.nextInt();
+                        quantidade = scanInt();
                     } while (quantidade > produtoAtivo.stock);
                     // remove stock
                     produtoAtivo.stock = produtoAtivo.stock - quantidade;
@@ -312,7 +318,7 @@ public class App {
 
                     do {
                         System.out.print("Indique ID do produto a remover: ");
-                        int idProduto = sc.nextInt();
+                        int idProduto = scanInt();
                         for (ItemCompra i : c.getLista()) {
                             if (i.getProduto().getId() == idProduto) {
                                 item = i;
@@ -322,7 +328,7 @@ public class App {
                     // quantidade
                     do {
                         System.out.print("Quantidade a remover: ");
-                        quantidade = sc.nextInt();
+                        quantidade = scanInt();
                     } while (quantidade > item.getQuantidade());
                     c.removerProduto(item.getProduto(), quantidade);
 
@@ -356,7 +362,7 @@ public class App {
                     System.out.println("Pretende confirmar a compra?\n1) Sim\n2) Não");
                     while (true) {
                         System.out.println("Opção-> ");
-                        option = sc.nextInt();
+                        option = scanInt();
                         if (option == 1) {
                             divisoria();
                             comprasRealizadas.add(c);
@@ -417,14 +423,13 @@ public class App {
         while (true) {
 
             Cliente clienteAtivo = null;
-            Scanner sc = new Scanner(System.in);
             while (loggedIn == false) {
                 gestor.divisoria();
                 System.out.println(gestor.getDataAtual());
                 System.out.println("1) Fazer log-in\n2) Terminar programa\n");
                 gestor.divisoria();
                 System.out.print("Opção-> ");
-                int option = sc.nextInt();
+                int option = gestor.scanInt();
 
                 switch (option) {
 
@@ -449,7 +454,7 @@ public class App {
                         break;
 
                     case 2:
-                        sc.close();
+                        gestor.scanner.close();
                         System.exit(1);
 
                     default:
@@ -474,7 +479,7 @@ public class App {
                         "1) Realizar compra\n2) Compras realizadas\n3) Mudar data atual\n4) Log-out\n5) Terminar programa\n");
                 gestor.divisoria();
                 System.out.print("Opção-> ");
-                int option = sc.nextInt();
+                int option = gestor.scanInt();
 
                 switch (option) {
 
@@ -502,7 +507,7 @@ public class App {
                         loggedIn = false;
                         break;
                     case 5:
-                        sc.close();
+                        gestor.scanner.close();
                         System.exit(1);
 
                     default:
