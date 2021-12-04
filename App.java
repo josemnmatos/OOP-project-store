@@ -7,9 +7,6 @@ public class App {
     private Data dataAtual = new Data(21, 11, 2021);
     // preencher no arranque ao ler dos ficheiros
     private ArrayList<Cliente> clientes = new ArrayList<>();
-    private ArrayList<Produto> produtosMobiliario = new ArrayList<>();
-    private ArrayList<Produto> produtosLimpeza = new ArrayList<>();
-    private ArrayList<Produto> produtosAlimentar = new ArrayList<>();
     private ArrayList<Produto> produtosDisponiveis = new ArrayList<>();
     private ArrayList<Promocao> promocoesAtivas = new ArrayList<>();
 
@@ -404,9 +401,6 @@ public class App {
         parseClientes();
         parseProdutos();
         parseCompras();
-        //
-        //juntaProdutos();
-        //
     }
 
     public void divisoria() {
