@@ -269,7 +269,7 @@ public class App {
 
     public void realizarCompra(Cliente cliente) {
         ArrayList<ItemCompra> produtosCompra = new ArrayList<>();
-        Compra c = new Compra(cliente, produtosCompra, dataAtual);
+        Compra c = new Compra(cliente, produtosCompra, new Data(dataAtual.getDia(),dataAtual.getMes(),dataAtual.getAno()));
         while (true) {
             System.out.println(
                     "1) Adicionar produto\n2) Remover produto\n3) Carrinho de compras\n4) Produtos disponíveis\n5) Checkout\n\nCusto atual-> "
