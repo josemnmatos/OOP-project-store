@@ -15,8 +15,15 @@ public class App {
     
     //scanner
     Scanner scanner = new Scanner(System.in);
+
     public int scanInt(){
         int input = scanner.nextInt();
+        scanner.nextLine();
+        return input;
+    }
+
+    public String scanLinha(){
+        String input = scanner.nextLine();
         return input;
     }
 
@@ -436,8 +443,8 @@ public class App {
                     case 1:
                         gestor.divisoria();
                         System.out.print("Email-> ");
-                        Scanner em = new Scanner(System.in);
-                        String email = em.nextLine();
+                        
+                        String email = gestor.scanLinha();
                         for (Cliente c : gestor.clientes) {
                             if (email.equals(c.getEmail())) {
                                 clienteAtivo = c;
