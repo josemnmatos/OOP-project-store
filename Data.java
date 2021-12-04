@@ -45,13 +45,29 @@ public class Data implements Serializable {
             this.ano = ano;
       }
 
-      public boolean estaEntre(Data data1, Data data2) {
-            // ano
-            if (this.ano >= data1.ano && this.ano <= data2.ano) {
-                  // mes
-                  if (this.mes >= data1.mes && this.mes <= data2.mes) {
-                        // dia
-                        if (this.dia >= data1.dia && this.dia <= data2.dia) {
+      public boolean antesDe(Data d) {
+            if (this.ano < d.getAno()) {
+                  return true;
+            } else if (this.ano == d.getAno()) {
+                  if (this.mes < d.getMes()) {
+                        return true;
+                  } else if (this.mes == d.getMes()) {
+                        if (this.dia <= d.getDia()) {
+                              return true;
+                        }
+                  }
+            }
+            return false;
+      }
+
+      public boolean depoisDe(Data d) {
+            if (this.ano > d.getAno()) {
+                  return true;
+            } else if (this.ano == d.getAno()) {
+                  if (this.mes > d.getMes()) {
+                        return true;
+                  } else if (this.mes == d.getMes()) {
+                        if (this.dia >= d.getDia()) {
                               return true;
                         }
                   }

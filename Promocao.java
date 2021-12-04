@@ -28,7 +28,7 @@ public abstract class Promocao implements Serializable {
       }
 
       public boolean promocaoAtiva(Data d) {
-            return d.estaEntre(periodoPromocao[0], periodoPromocao[1]);
+            return (d.depoisDe(periodoPromocao[0]) && d.antesDe(periodoPromocao[1]));
       }
 
 }

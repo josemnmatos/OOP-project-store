@@ -25,6 +25,15 @@ public class ItemCompra implements Serializable {
             this.quantidade = quantidade;
       }
 
+      public double getPrecoItem() {
+            // nao esta em promocao
+            if (this.produto.getPromocaoAssociada() == null)
+                  return this.produto.getPrecoUnitario() * this.quantidade;
+            else {
+                  return this.produto.getPromocaoAssociada().custoAposPromocao(this.quantidade,
+                              this.produto.getPrecoUnitario());
+            }
+      }
 
       @Override
       public String toString() {

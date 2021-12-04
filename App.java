@@ -1,8 +1,5 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
 import java.io.*;
 
 public class App {
@@ -346,15 +343,21 @@ public class App {
         System.out.println("\n");
     }
 
-    private boolean emPromocao(Produto p) {
-        for (Promocao promo : promocoesAtivas) {
-            if (promo.getProdutoAssociado().getId() == p.getId()) {
-                if (promo.promocaoAtiva(dataAtual)) {
-                    return true;
+    private void ativaPromocoes() {
+        for (Produto produto : produtosDisponiveis) {
+            for (Promocao promocao : promocoesAtivas) {
+                if (produto.getId() == promocao.getProdutoAssociado().getId()) {
+                    if (promocao.promocaoAtiva(dataAtual)) {
+                        System.out.println(promocao.produtoAssociado.getNome());
+                        produto.setPromocaoAssociada(promocao);
+                    }
                 }
             }
         }
-        return false;
+    }
+
+    public ArrayList<Promocao> getListaPromocoes() {
+        return promocoesAtivas;
     }
 
     // COMPRA
@@ -525,6 +528,7 @@ public class App {
         parseProdutos();
         parsePromocoes();
         parseCompras();
+        ativaPromocoes();
     }
 
     public void divisoria() {

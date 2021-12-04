@@ -16,7 +16,7 @@ public class Compra implements Serializable {
       public double custoAtual() {
             double custoAtual = 0;
             for (ItemCompra item : listaProduto) {
-                  custoAtual += item.getProduto().getPrecoUnitario() * item.getQuantidade();
+                  custoAtual += item.getPrecoItem();
             }
             return custoAtual;
       }

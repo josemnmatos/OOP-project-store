@@ -5,6 +5,7 @@ public abstract class Produto implements Serializable {
       protected String nome;
       protected double precoUnitario;
       protected int stock;
+      protected Promocao promocaoAssociada = null;
 
       public Produto(int id, String nome, double precoUnitario, int stock) {
             if (id < 0) {
@@ -28,7 +29,6 @@ public abstract class Produto implements Serializable {
             }
 
       }
-
 
       public int getId() {
             return this.id;
@@ -62,19 +62,26 @@ public abstract class Produto implements Serializable {
             this.stock = stock;
       }
 
-      public double custosAdicionais(){
+      public Promocao getPromocaoAssociada() {
+            return this.promocaoAssociada;
+      }
+
+      public void setPromocaoAssociada(Promocao promocaoAssociada) {
+            this.promocaoAssociada = promocaoAssociada;
+      }
+
+      public double custosAdicionais() {
             return 0;
       }
 
       @Override
       public String toString() {
             return "{" +
-                  " id='" + getId() + "'" +
-                  ", nome='" + getNome() + "'" +
-                  ", precoUnitario='" + getPrecoUnitario() + "'" +
-                  ", stock='" + getStock() + "'" +
-                  "}";
+                        " id='" + getId() + "'" +
+                        ", nome='" + getNome() + "'" +
+                        ", precoUnitario='" + getPrecoUnitario() + "'" +
+                        ", stock='" + getStock() + "'" +
+                        "}";
       }
-
 
 }
