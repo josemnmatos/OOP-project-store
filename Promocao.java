@@ -4,15 +4,12 @@ public abstract class Promocao implements Serializable {
       protected Produto produtoAssociado;
       protected Data[] periodoPromocao;
 
-
       public Promocao(Produto produtoAssociado, Data[] periodoPromocao) {
             this.produtoAssociado = produtoAssociado;
             this.periodoPromocao = periodoPromocao;
       }
 
-
       protected abstract double custoAposPromocao(int quantidade, double precoUnitario);
-
 
       public Produto getProdutoAssociado() {
             return this.produtoAssociado;
@@ -28,6 +25,10 @@ public abstract class Promocao implements Serializable {
 
       public void setPeriodoPromocao(Data[] periodoPromocao) {
             this.periodoPromocao = periodoPromocao;
+      }
+
+      public boolean promocaoAtiva(Data d) {
+            return d.estaEntre(periodoPromocao[0], periodoPromocao[1]);
       }
 
 }

@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 import java.io.*;
 
 public class App {
@@ -343,6 +346,17 @@ public class App {
         System.out.println("\n");
     }
 
+    private boolean emPromocao(Produto p) {
+        for (Promocao promo : promocoesAtivas) {
+            if (promo.getProdutoAssociado().getId() == p.getId()) {
+                if (promo.promocaoAtiva(dataAtual)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     // COMPRA
     private void parseCompras() {
         File obj = new File("compras.obj");
@@ -373,9 +387,9 @@ public class App {
                 new Data(dataAtual.getDia(), dataAtual.getMes(), dataAtual.getAno()));
         while (true) {
             System.out.println(
-                    "1) Adicionar produto\n2) Remover produto\n3) Carrinho de compras\n4) Produtos disponíveis\n5) Checkout\n\nCusto atual-> "
+                    "1) Adicionar produto\n2) Remover produto\n3) Carrinho de compras\n4) Produtos e Promoções\n5) Checkout\n6) Menu\n\nCusto atual-> "
                             + c.custoAtual() + "euros");
-
+            System.out.print("Opção-> ");
             int option = scanInt();
             switch (option) {
 
@@ -441,7 +455,12 @@ public class App {
                     }
                     break;
                 case 4:
+                    divisoria();
+                    System.out.println("Produtos:\n");
                     listaProdutos();
+                    System.out.println("Promoções:\n");
+                    listaPromocoes();
+                    divisoria();
                     break;
                 case 5:
                     if (c.getLista().isEmpty()) {
@@ -468,6 +487,9 @@ public class App {
                             break;
                         }
                     }
+
+                case 6:
+                    return;
 
                 default:
                     System.out.println("Operação inválida.");

@@ -45,9 +45,23 @@ public class Data implements Serializable {
             this.ano = ano;
       }
 
+      public boolean estaEntre(Data data1, Data data2) {
+            // ano
+            if (this.ano >= data1.ano && this.ano <= data2.ano) {
+                  // mes
+                  if (this.mes >= data1.mes && this.mes <= data2.mes) {
+                        // dia
+                        if (this.dia >= data1.dia && this.dia <= data2.dia) {
+                              return true;
+                        }
+                  }
+            }
+            return false;
+      }
+
       @Override
       public String toString() {
-            return dia+"/"+mes+"/"+ano;
+            return dia + "/" + mes + "/" + ano;
       }
 
 }
