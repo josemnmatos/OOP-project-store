@@ -1,4 +1,10 @@
 final public class PagueMenos extends Promocao {
+
+
+      public PagueMenos(Produto produtoAssociado, Data[] periodoPromocao) {
+            super(produtoAssociado, periodoPromocao);
+      }
+
       
       public double custoAposPromocao(int quantidade, double precoUnitario) {
             double custoFinal = 0;

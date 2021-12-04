@@ -12,17 +12,17 @@ public class App {
 
     // lista de compras realizadas
     private ArrayList<Compra> comprasRealizadas = new ArrayList<>();
-    
-    //scanner
+
+    // scanner
     Scanner scanner = new Scanner(System.in);
 
-    public int scanInt(){
+    public int scanInt() {
         int input = scanner.nextInt();
         scanner.nextLine();
         return input;
     }
 
-    public String scanLinha(){
+    public String scanLinha() {
         String input = scanner.nextLine();
         return input;
     }
@@ -36,7 +36,7 @@ public class App {
         int dia, mes, ano;
         do {
             System.out.println("Dia: ");
-    
+
             dia = scanInt();
             System.out.println("Mês: ");
             mes = scanInt();
@@ -65,10 +65,10 @@ public class App {
                 FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 try {
-                        clientes = (ArrayList<Cliente>) ois.readObject();
-                    } catch (EOFException e) {
-                        ois.close();
-                    }
+                    clientes = (ArrayList<Cliente>) ois.readObject();
+                } catch (EOFException e) {
+                    ois.close();
+                }
             } catch (FileNotFoundException ex) {
                 System.err.println("Erro a abrir ficheiro.");
             } catch (IOException ex) {
@@ -151,8 +151,8 @@ public class App {
 
     // PRODUTOS
     private void parseProdutos() {
-        File obj= new File("produtos.obj");
-        
+        File obj = new File("produtos.obj");
+
         // verifica a existencia de ficheiro de objetos
         if (obj.exists() && obj.isFile()) {
             try {
@@ -164,7 +164,7 @@ public class App {
                 } catch (EOFException e) {
                     ois.close();
                 }
-                
+
             } catch (FileNotFoundException ex) {
                 System.err.println("Erro a abrir ficheiro.");
             } catch (IOException ex) {
@@ -172,8 +172,7 @@ public class App {
             } catch (ClassNotFoundException ex) {
                 System.err.println("Erro a converter objeto.");
             }
-        }
-             else {
+        } else {
             File f = new File("produtos.txt");
             if (f.exists() && f.isFile()) {
                 try {
@@ -241,19 +240,108 @@ public class App {
         } catch (IOException ex) {
             System.err.println("Erro a escrever para o ficheiro.");
         }
-       
+
     }
 
     // lista todos os produtos
     public void listaProdutos() {
-        System.out.format("%-3s %-20s %-5s %-5s\n\n","ID","Produto","Preço","Stock");
+        System.out.format("%-3s %-20s %-5s %-5s\n\n", "ID", "Produto", "Preço", "Stock");
         for (Produto p : produtosDisponiveis) {
-            System.out.format("%-3d %-20s %4.2f %-5d\n\n",p.getId(),p.getNome(),p.getPrecoUnitario(),p.getStock());
+            System.out.format("%-3d %-20s %4.2f %-5d\n\n", p.getId(), p.getNome(), p.getPrecoUnitario(), p.getStock());
         }
         System.out.println("\n");
     }
 
-    
+    // PROMOCOES
+
+    private void parsePromocoes() {
+        File obj = new File("promocoes.obj");
+        // verifica a existencia de ficheiro de objetos
+        if (obj.exists() && obj.isFile()) {
+            try {
+                // le mobiliario
+                FileInputStream fis = new FileInputStream(obj);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                try {
+                    promocoesAtivas = (ArrayList<Promocao>) ois.readObject();
+                } catch (EOFException e) {
+                    ois.close();
+                }
+            } catch (FileNotFoundException ex) {
+                System.err.println("Erro a abrir ficheiro.");
+            } catch (IOException ex) {
+                System.err.println("Erro a ler ficheiro.");
+            } catch (ClassNotFoundException ex) {
+                System.err.println("Erro a converter objeto.");
+            }
+        } else {
+            File f = new File("promocoes.txt");
+            if (f.exists() && f.isFile()) {
+                try {
+                    FileReader fr = new FileReader(f);
+                    BufferedReader br = new BufferedReader(fr);
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        Produto produtoAssociado = null;
+                        String[] detalhesPromocao = line.split(",");
+                        int idProduto = Integer.parseInt(detalhesPromocao[1]);
+                        for (Produto p : produtosDisponiveis) {
+                            if (p.getId() == idProduto) {
+                                produtoAssociado = p;
+                                break;
+                            }
+                        }
+                        String[] detalhesData = detalhesPromocao[2].split("/");
+                        Data dataInicio = new Data(Integer.parseInt(detalhesData[0]), Integer.parseInt(detalhesData[1]),
+                                Integer.parseInt(detalhesData[2]));
+                        detalhesData = detalhesPromocao[3].split("/");
+                        Data dataFim = new Data(Integer.parseInt(detalhesData[0]), Integer.parseInt(detalhesData[1]),
+                                Integer.parseInt(detalhesData[2]));
+                        Data[] periodoPromocao = { dataInicio, dataFim };
+                        // leve-3-pague-4
+                        if (detalhesPromocao[0].equals("l3p4")) {
+                            Promocao p1 = new Pague3Leve4(produtoAssociado, periodoPromocao);
+                            promocoesAtivas.add(p1);
+                        } else if (detalhesPromocao[0].equals("pm")) {
+                            Promocao p2 = new PagueMenos(produtoAssociado, periodoPromocao);
+                            promocoesAtivas.add(p2);
+                        }
+
+                    }
+                    br.close();
+                } catch (FileNotFoundException ex) {
+                    System.err.println("Erro a abrir ficheiro de texto.");
+                } catch (IOException ex) {
+                    System.err.println("Erro a ler ficheiro de texto.");
+                }
+            }
+            createObjPromocoes();
+        }
+
+    }
+
+    private void createObjPromocoes() {
+        File f = new File("promocoes.obj");
+        try {
+            FileOutputStream fos = new FileOutputStream(f, true);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(promocoesAtivas);
+            oos.close();
+        } catch (FileNotFoundException ex) {
+            System.err.println("Erro a criar ficheiro.");
+        } catch (IOException ex) {
+            System.err.println("Erro a escrever para o ficheiro.");
+        }
+    }
+
+    public void listaPromocoes() {
+        System.out.format("%-3s %-20s %-10s %-10s\n\n", "ID", "Produto", "DataInicio", "DataFim");
+        for (Promocao p : promocoesAtivas) {
+            System.out.format("%-3s %-20s %-10s %-10s\n\n", p.getProdutoAssociado().getId(),
+                    p.getProdutoAssociado().getNome(), p.getPeriodoPromocao()[0], p.getPeriodoPromocao()[1]);
+        }
+        System.out.println("\n");
+    }
 
     // COMPRA
     private void parseCompras() {
@@ -262,13 +350,12 @@ public class App {
             try {
                 FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
-                try{
-                comprasRealizadas = (ArrayList<Compra>) ois.readObject();
-                }
-                catch(EOFException e){
+                try {
+                    comprasRealizadas = (ArrayList<Compra>) ois.readObject();
+                } catch (EOFException e) {
                     ois.close();
                 }
-                
+
             } catch (FileNotFoundException ex) {
                 System.err.println("Erro a abrir ficheiro.");
             } catch (IOException ex) {
@@ -282,12 +369,13 @@ public class App {
 
     public void realizarCompra(Cliente cliente) {
         ArrayList<ItemCompra> produtosCompra = new ArrayList<>();
-        Compra c = new Compra(cliente, produtosCompra, new Data(dataAtual.getDia(),dataAtual.getMes(),dataAtual.getAno()));
+        Compra c = new Compra(cliente, produtosCompra,
+                new Data(dataAtual.getDia(), dataAtual.getMes(), dataAtual.getAno()));
         while (true) {
             System.out.println(
                     "1) Adicionar produto\n2) Remover produto\n3) Carrinho de compras\n4) Produtos disponíveis\n5) Checkout\n\nCusto atual-> "
                             + c.custoAtual() + "euros");
-            
+
             int option = scanInt();
             switch (option) {
 
@@ -352,7 +440,7 @@ public class App {
                                 i.getProduto().getPrecoUnitario());
                     }
                     break;
-                case 4: 
+                case 4:
                     listaProdutos();
                     break;
                 case 5:
@@ -413,6 +501,7 @@ public class App {
     public void inicializar() {
         parseClientes();
         parseProdutos();
+        parsePromocoes();
         parseCompras();
     }
 
@@ -425,6 +514,7 @@ public class App {
         App gestor = new App();
 
         gestor.inicializar();
+        gestor.listaPromocoes();
 
         boolean loggedIn = false;
         while (true) {
@@ -443,7 +533,7 @@ public class App {
                     case 1:
                         gestor.divisoria();
                         System.out.print("Email-> ");
-                        
+
                         String email = gestor.scanLinha();
                         for (Cliente c : gestor.clientes) {
                             if (email.equals(c.getEmail())) {
