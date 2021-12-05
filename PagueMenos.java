@@ -20,4 +20,8 @@ final public class PagueMenos extends Promocao {
             return custoFinal;
       }
 
+      public String tipoPromocao(){
+            return "Pague-Menos";
+      }
+
 }

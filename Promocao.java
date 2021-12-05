@@ -31,4 +31,6 @@ public abstract class Promocao implements Serializable {
             return (d.depoisDe(periodoPromocao[0]) && d.antesDe(periodoPromocao[1]));
       }
 
+      public abstract String tipoPromocao();
+
 }

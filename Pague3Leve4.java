@@ -8,4 +8,8 @@ final public class Pague3Leve4 extends Promocao {
             return (quantidade - (int) (quantidade / 4)) * precoUnitario;
       }
 
+      public String tipoPromocao(){
+            return "Pague-3-Leve-4";
+      }
+
 }
