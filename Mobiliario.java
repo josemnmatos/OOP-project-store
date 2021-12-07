@@ -34,18 +34,6 @@ final public class Mobiliario extends Produto {
             return this.peso;
       }
 
-      public void setPeso(double peso) {
-            this.peso = peso;
-      }
-
-      public Dimensao getDimensao() {
-            return this.dimensao;
-      }
-
-      public void setDimensao(Dimensao dimensao) {
-            this.dimensao = dimensao;
-      }
-
       @Override
       public String toString() {
             return "\nID: " + this.id

@@ -32,30 +32,7 @@ public class Morada implements Serializable{
             }
       }
 
-      public String getRua() {
-            return this.rua;
-      }
-
-      public void setRua(String rua) {
-            this.rua = rua;
-      }
-
-      public int getNumero() {
-            return this.numero;
-      }
-
-      public void setNumero(int numero) {
-            this.numero = numero;
-      }
-
-      public int getCodigoPostal() {
-            return this.codigoPostal;
-      }
-
-      public void setCodigoPostal(int codigoPostal) {
-            this.codigoPostal = codigoPostal;
-      }
-
+     
       @Override
       public String toString() {
             return this.rua+", "+this.numero+", "+this.codigoPostal;

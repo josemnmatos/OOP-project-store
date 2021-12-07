@@ -17,8 +17,8 @@ public class Dimensao implements Serializable {
       /**
        * Construtor da classe Dimensao
        * 
-       * @param altura Altura
-       * @param largura Largura
+       * @param altura       Altura
+       * @param largura      Largura
        * @param profundidade Profundidade
        */
       public Dimensao(double altura, double largura, double profundidade) {
@@ -35,30 +35,6 @@ public class Dimensao implements Serializable {
       @Override
       public String toString() {
             return "(" + this.altura + "m x " + this.largura + "m x " + this.profundidade + "m" + ")";
-      }
-
-      public double getAltura() {
-            return this.altura;
-      }
-
-      public void setAltura(double altura) {
-            this.altura = altura;
-      }
-
-      public double getLargura() {
-            return this.largura;
-      }
-
-      public void setLargura(double largura) {
-            this.largura = largura;
-      }
-
-      public double getProfundidade() {
-            return this.profundidade;
-      }
-
-      public void setProfundidade(double profundidade) {
-            this.profundidade = profundidade;
       }
 
 }

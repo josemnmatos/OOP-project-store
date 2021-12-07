@@ -57,24 +57,12 @@ public abstract class Produto implements Serializable {
             return this.id;
       }
 
-      public void setId(int id) {
-            this.id = id;
-      }
-
       public String getNome() {
             return this.nome;
       }
 
-      public void setNome(String nome) {
-            this.nome = nome;
-      }
-
       public double getPrecoUnitario() {
             return this.precoUnitario;
-      }
-
-      public void setPrecoUnitario(double precoUnitario) {
-            this.precoUnitario = precoUnitario;
       }
 
       public int getStock() {
@@ -92,9 +80,11 @@ public abstract class Produto implements Serializable {
       public void setPromocaoAssociada(Promocao promocaoAssociada) {
             this.promocaoAssociada = promocaoAssociada;
       }
+
       /**
        * Método retorna custos adicionais do produto
-       * @return Valor dos custos adicionais 
+       * 
+       * @return Valor dos custos adicionais
        */
       public double custosAdicionais() {
             return 0;

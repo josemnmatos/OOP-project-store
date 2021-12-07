@@ -39,17 +39,10 @@ final public class Alimentar extends Produto {
             return this.kcalPor100g;
       }
 
-      public void setKcalPor100g(double kcalPor100g) {
-            this.kcalPor100g = kcalPor100g;
-      }
-
       public double getPercentagemGordura() {
             return this.percentagemGordura;
       }
 
-      public void setPercentagemGordura(double percentagemGordura) {
-            this.percentagemGordura = percentagemGordura;
-      }
 
       @Override
       public String toString() {

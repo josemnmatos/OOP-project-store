@@ -24,10 +24,6 @@ public class ItemCompra implements Serializable {
             return this.produto;
       }
 
-      public void setProduto(Produto produto) {
-            this.produto = produto;
-      }
-
       public int getQuantidade() {
             return this.quantidade;
       }
