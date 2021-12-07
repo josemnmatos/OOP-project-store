@@ -1,9 +1,20 @@
 import java.io.Serializable;
 
 public class ItemCompra implements Serializable {
+      /**
+       * Produto que está a ser comprado
+       */
       private Produto produto;
+      /**
+       * Quantidade de produto
+       */
       private int quantidade;
 
+      /**
+       * Construtor da classe ItemCompra
+       * @param produto Produto que está a ser comprado
+       * @param quantidade Quantidade de produto
+       */
       public ItemCompra(Produto produto, int quantidade) {
             this.produto = produto;
             this.quantidade = quantidade;
@@ -25,6 +36,11 @@ public class ItemCompra implements Serializable {
             this.quantidade = quantidade;
       }
 
+      /**
+       * Método para obter o valor total do item (após promoção caso esta exista)
+       * 
+       * @return Valor total do item
+       */
       public double getPrecoItem() {
             // nao esta em promocao
             if (this.produto.getPromocaoAssociada() == null)

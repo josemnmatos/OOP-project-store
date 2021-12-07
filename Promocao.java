@@ -28,9 +28,10 @@ public abstract class Promocao implements Serializable {
 
       /**
        * 
-       * @param quantidade
-       * @param precoUnitario
-       * @return
+       * @param quantidade    Quantidade do produto que está a ser comprado
+       * @param precoUnitario Preço por unidade do produto
+       * 
+       * @return Custo final
        */
       protected abstract double custoAposPromocao(int quantidade, double precoUnitario);
 

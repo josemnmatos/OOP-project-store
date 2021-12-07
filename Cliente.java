@@ -1,12 +1,36 @@
 import java.io.Serializable;
 
 public class Cliente implements Serializable {
+      /**
+       * Nome do cliente
+       */
       private String nome;
+      /**
+       * Morada do cliente
+       */
       private Morada morada;
+      /**
+       * Email do cliente
+       */
       private String email;
+      /**
+       * Telefone do cliente
+       */
       private int telefone;
+      /**
+       * Data de nascimento do cliente
+       */
       private Data dataNascimento;
 
+      /**
+       * Construtor da superclasse Cliente
+       * 
+       * @param nome Nome do cliente
+       * @param morada Morada do cliente
+       * @param email Email do cliente
+       * @param telefone Telefone do cliente
+       * @param dataNascimento Data de nascimento do cliente
+       */
       public Cliente(String nome, Morada morada, String email, int telefone, Data dataNascimento) {
             this.nome = nome;
             this.morada = morada;
@@ -68,6 +92,12 @@ public class Cliente implements Serializable {
             this.dataNascimento = dataNascimento;
       }
 
+      /**
+       * Método que retorna o custo dos portes
+       * 
+       * @param custoAtual custo atual da compra asssociada ao cliente
+       * @return Custo dos portes 20
+       */
       public double custoPortes(double custoAtual) {
             return 20;
       }

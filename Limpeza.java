@@ -1,7 +1,19 @@
 
 final public class Limpeza extends Produto {
+      /**
+       * Grau de toxicidade do produto
+       */
       private int grauToxicidade;
 
+      /**
+       * Construtor da subclasse de Produto, Limpeza
+       * 
+       * @param id ID do produto
+       * @param nome Nome do produto
+       * @param precoUnitario Preço por unidade do produto
+       * @param stock Stock do produto
+       * @param grauToxicidade Grau de toxicidade do produto
+       */
       public Limpeza(int id, String nome, double precoUnitario, int stock, int grauToxicidade) {
             super(id, nome, precoUnitario, stock);
             if (grauToxicidade < 0 || grauToxicidade > 10) {

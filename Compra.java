@@ -4,26 +4,26 @@ import java.util.Iterator;
 
 public class Compra implements Serializable {
       /**
-       * Cliente associado à compra.
+       * Cliente associado à compra
        */
       private Cliente cliente;
 
       /**
-       * Data de realização da compra.
+       * Data de realização da compra
        */
       private Data dataCompra;
 
       /**
-       * Lista de produtos e quantidades de produto da compra.
+       * Lista de produtos e quantidades de produto da compra
        */
       private ArrayList<ItemCompra> listaProduto = new ArrayList<>();
 
       /**
-       * Construtor da classe Compra.
-       * 
+       * Construtor da classe Compra
+       *
        * @param cliente      Cliente associado à compra.
-       * @param listaProduto Lista de produtos e quantidades de produto da compra.
-       * @param dataCompra   Data de realização da compra.
+       * @param listaProduto Lista de produtos e quantidades de produto da compra
+       * @param dataCompra   Data de realização da compra
        */
       public Compra(Cliente cliente, ArrayList<ItemCompra> listaProduto, Data dataCompra) {
             this.cliente = cliente;
@@ -32,9 +32,9 @@ public class Compra implements Serializable {
       }
 
       /**
-       * Método que retorna o custo atual de um objeto Compra.
+       * Método que retorna o custo atual de um objeto Compra
        * 
-       * @return Custo atual da compra.
+       * @return Custo atual da compra
        */
       public double custoAtual() {
             double custoAtual = 0;
@@ -46,9 +46,9 @@ public class Compra implements Serializable {
 
       /**
        * Método que retorna o custo final de um objeto Compra (Produtos, portes e
-       * custos adicionais).
+       * custos adicionais)
        * 
-       * @return Custo final da compra.
+       * @return Custo final da compra
        */
       public double custoFinal() {
             double custoFinal = this.custoAtual();
@@ -62,20 +62,20 @@ public class Compra implements Serializable {
       }
 
       /**
-       * Método que permite adicionar uma quantidade de um certo produto à compra.
+       * Método que permite adicionar uma quantidade de um certo produto à compra
        * 
-       * @param p          Produto a adicionar.
-       * @param quantidade Quantidade a adicionar.
+       * @param p          Produto a adicionar
+       * @param quantidade Quantidade a adicionar
        */
       public void adicionarProduto(Produto p, int quantidade) {
             listaProduto.add(new ItemCompra(p, quantidade));
       }
 
       /**
-       * Método que permite remover uma quantidade de um certo produto da compra.
+       * Método que permite remover uma quantidade de um certo produto da compra
        * 
-       * @param p          Produto a remover.
-       * @param quantidade Quantidade a remover.
+       * @param p          Produto a remover
+       * @param quantidade Quantidade a remover
        */
       public void removerProduto(Produto p, int quantidade) {
             for (Iterator<ItemCompra> i = listaProduto.iterator(); i.hasNext();) {
@@ -91,7 +91,7 @@ public class Compra implements Serializable {
       }
 
       /**
-       * Método que imprime os detalhes de uma compra.
+       * Método que imprime os detalhes de uma compra
        */
       public void mostraCompra() {
             System.out.println(

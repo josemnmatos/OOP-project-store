@@ -6,32 +6,32 @@ public class App {
     // ATRIBUTOS ------------------------------------
 
     /**
-     * Cliente ativo na aplicação.
+     * Cliente ativo na aplicação
      */
     private Cliente clienteAtivo;
 
     /**
-     * Data corrente da aplicação.
+     * Data corrente da aplicação
      */
     private Data dataAtual = new Data(21, 11, 2021);
 
     /**
-     * Lista de clientes existentes.
+     * Lista de clientes existentes
      */
     private ArrayList<Cliente> clientes = new ArrayList<>();
 
     /**
-     * Lista de produtos disponíveis para compra.
+     * Lista de produtos disponíveis para compra
      */
     private ArrayList<Produto> produtos = new ArrayList<>();
 
     /**
-     * Lista de promoções (ativas ou não) existentes.
+     * Lista de promoções (ativas ou não) existentes
      */
     private ArrayList<Promocao> promocoes = new ArrayList<>();
 
     /**
-     * Lista de compras efetuadas até ao momento.
+     * Lista de compras efetuadas até ao momento
      */
     private ArrayList<Compra> compras = new ArrayList<>();
 
@@ -40,7 +40,7 @@ public class App {
     // FUNCIONAMENTO ------------------------------------
 
     /**
-     * Método que lê um inteiro introduzido, o guarda numa varíavel e o retorna.
+     * Método que lê um inteiro introduzido, o guarda numa varíavel e o retorna
      * 
      * @return Inteiro introduzido
      */
@@ -52,7 +52,7 @@ public class App {
 
     /**
      * Método que lê uma String introduzida(Até ao '/n'), a guarda numa varíavel e a
-     * retorna.
+     * retorna
      * 
      * @return String introduzida
      */
@@ -62,7 +62,7 @@ public class App {
     }
 
     /**
-     * Método para facilitar interpretação da consola.
+     * Método para facilitar interpretação da consola
      */
     public void divisoria() {
         System.out.println("-------------------------");
@@ -70,7 +70,7 @@ public class App {
 
     // DATA ATUAL ------------------------------------
     /**
-     * Método que retorna a data atual.
+     * Método que retorna a data atual
      * 
      * @return Objeto da classe Data
      */
@@ -79,7 +79,7 @@ public class App {
     }
 
     /**
-     * Método que permite mudar a data atual da aplicação.
+     * Método que permite mudar a data atual da aplicação
      */
     public void mudaDataAtual() {
         int dia, mes, ano;
@@ -99,8 +99,8 @@ public class App {
 
     // CLIENTES ------------------------------------
     /**
-     * Método que retorna o cliente ativo naquele momento.
-     * 
+     * Método que retorna o cliente ativo naquele momento
+     *
      * @return Objeto da classe Cliente
      */
     public Cliente getClienteAtivo() {
@@ -108,7 +108,7 @@ public class App {
     }
 
     /**
-     * Método que permite ativar um cliente.
+     * Método que permite ativar um cliente
      * 
      * @param c Cliente a ativar
      */
@@ -119,7 +119,7 @@ public class App {
     /**
      * Método que lê e trata os dados do ficheiro de texto relativo aos clientes da
      * primeira vez que o programa funciona, no caso de já existir um ficheiro de
-     * objetos relativo a clientes, dá vez à leitura de esse ficheiro.
+     * objetos relativo a clientes, dá vez à leitura de esse ficheiro
      */
     private void parseClientes() {
         File obj = new File("clientes.obj");
@@ -181,7 +181,7 @@ public class App {
 
     /**
      * Método que guarda dados relativos a clientes no respetivo ficheiro de
-     * objetos. Cria o ficheiro caso não exista.
+     * objetos. Cria o ficheiro caso não exista
      */
     private void createObjClientes() {
         File f = new File("clientes.obj");
@@ -202,7 +202,7 @@ public class App {
     /**
      * Método que lê e trata os dados do ficheiro de texto relativo aos produtos da
      * primeira vez que o programa funciona, no caso de já existir um ficheiro de
-     * objetos relativo a produtos, dá vez à leitura de esse ficheiro.
+     * objetos relativo a produtos, dá vez à leitura de esse ficheiro
      */
     private void parseProdutos() {
         File obj = new File("produtos.obj");
@@ -283,7 +283,7 @@ public class App {
 
     /**
      * Método que guarda dados relativos a produtos no respetivo ficheiro de
-     * objetos. Cria o ficheiro caso não exista.
+     * objetos. Cria o ficheiro caso não exista
      */
     private void createObjProdutos() {
         File f = new File("produtos.obj");
@@ -301,7 +301,7 @@ public class App {
     }
 
     /**
-     * Método que imprime os produtos disponíveis.
+     * Método que imprime os produtos disponíveis
      */
     public void listaProdutos() {
         System.out.format("%-3s %-20s %-5s %-5s\n\n", "ID", "Produto", "Preço", "Stock");
@@ -316,7 +316,7 @@ public class App {
     /**
      * Método que lê e trata os dados do ficheiro de texto relativo às promoções da
      * primeira vez que o programa funciona, no caso de já existir um ficheiro de
-     * objetos relativo a promoções, dá vez à leitura de esse ficheiro.
+     * objetos relativo a promoções, dá vez à leitura de esse ficheiro
      */
     private void parsePromocoes() {
         File obj = new File("promocoes.obj");
@@ -386,7 +386,7 @@ public class App {
 
     /**
      * Método que guarda dados relativos a promoções no respetivo ficheiro de
-     * objetos. Cria o ficheiro caso não exista.
+     * objetos. Cria o ficheiro caso não exista
      */
     private void createObjPromocoes() {
         File f = new File("promocoes.obj");
@@ -403,7 +403,7 @@ public class App {
     }
 
     /**
-     * Método que imprime as promoções disponíveis.
+     * Método que imprime as promoções disponíveis
      */
     public void listaPromocoes() {
         System.out.format("%-3s %-20s %-10s %-10s\n\n", "ID", "Produto", "DataInicio", "DataFim");
@@ -418,7 +418,7 @@ public class App {
 
     /**
      * Método que lê e trata os dados do ficheiro de objetos relativo às compras
-     * efetuadas, caso este exista.
+     * efetuadas, caso este exista
      */
     private void parseCompras() {
         File obj = new File("compras.obj");
@@ -444,7 +444,7 @@ public class App {
     }
 
     /**
-     * Método que permite a um cliente realizar uma compra.
+     * Método que permite a um cliente realizar uma compra
      * 
      * @param cliente Cliente a realizar a compra
      */
@@ -567,7 +567,7 @@ public class App {
 
     /**
      * Método que guarda dados relativos a compras no respetivo ficheiro de
-     * objetos. Cria o ficheiro caso não exista.
+     * objetos. Cria o ficheiro caso não exista
      */
     private void updateCompraObj() {
         try {
@@ -594,7 +594,7 @@ public class App {
     // INICIALIZACAO ------------------------------------
     /**
      * Método que ativa/desativa as promoções tendo em conta a data atual da
-     * aplicação.
+     * aplicação
      */
     private void gerePromocoes() {
         for (Produto produto : produtos) {
@@ -612,7 +612,7 @@ public class App {
 
     /**
      * Método que inicializa todos os atributos necessários para o funcionamento da
-     * aplicação.
+     * aplicação
      */
     public void inicializar() {
         parseClientes();

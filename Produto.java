@@ -2,33 +2,33 @@ import java.io.Serializable;
 
 public abstract class Produto implements Serializable {
       /**
-       * ID do produto.
+       * ID do produto
        */
       protected int id;
       /**
-       * Nome do produto.
+       * Nome do produto
        */
       protected String nome;
       /**
-       * Preço do produto.
+       * Preço do produto
        */
       protected double precoUnitario;
       /**
-       * Stock disponível.
+       * Stock disponível
        */
       protected int stock;
       /**
-       * Estado de promoção do produto;
+       * Estado de promoção do produto
        */
       protected Promocao promocaoAssociada = null;
 
       /**
-       * Construtor da superclasse Produto.
+       * Construtor da superclasse Produto
        * 
-       * @param id            ID do produto.
-       * @param nome          Nome do produto.
-       * @param precoUnitario Preço do produto.
-       * @param stock         Stock disponível.
+       * @param id            ID do produto
+       * @param nome          Nome do produto
+       * @param precoUnitario Preço do produto
+       * @param stock         Stock disponível
        */
       public Produto(int id, String nome, double precoUnitario, int stock) {
             if (id < 0) {
@@ -92,7 +92,10 @@ public abstract class Produto implements Serializable {
       public void setPromocaoAssociada(Promocao promocaoAssociada) {
             this.promocaoAssociada = promocaoAssociada;
       }
-
+      /**
+       * Método retorna custos adicionais do produto
+       * @return Valor dos custos adicionais 
+       */
       public double custosAdicionais() {
             return 0;
       }

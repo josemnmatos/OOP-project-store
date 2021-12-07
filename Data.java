@@ -2,24 +2,24 @@ import java.io.Serializable;
 
 public class Data implements Serializable {
       /**
-       * Dia.
+       * Dia
        */
       private int dia;
       /**
-       * Mês.
+       * Mês
        */
       private int mes;
       /**
-       * Ano.
+       * Ano
        */
       private int ano;
 
       /**
-       * Construtor de um objeto da classe Data.
+       * Construtor de um objeto da classe Data
        * 
-       * @param dia Dia.
-       * @param mes Mês.
-       * @param ano Ano.
+       * @param dia Dia
+       * @param mes Mês
+       * @param ano Ano
        */
       public Data(int dia, int mes, int ano) {
             if (dia <= 0 || dia >= 32) {
@@ -38,10 +38,10 @@ public class Data implements Serializable {
       }
 
       /**
-       * Método que verifica se uma data ocorre antes de outra.
-       * 
-       * @param d Data a comparar.
-       * @return True se a data a comparar ocorre depois, False se ocorre antes.
+       * Método que verifica se uma data ocorre antes de outra
+       *
+       * @param d Data a comparar
+       * @return True se a data a comparar ocorre depois, False se ocorre antes
        */
       public boolean antesDe(Data d) {
             if (this.ano < d.getAno()) {
@@ -59,10 +59,10 @@ public class Data implements Serializable {
       }
 
       /**
-       * Método que verifica se uma data ocorre depois de outra.
+       * Método que verifica se uma data ocorre depois de outra
        * 
-       * @param d Data a comparar.
-       * @return False se a data a comparar ocorre depois, True se ocorre antes.
+       * @param d Data a comparar
+       * @return False se a data a comparar ocorre depois, True se ocorre antes
        */
       public boolean depoisDe(Data d) {
             if (this.ano > d.getAno()) {

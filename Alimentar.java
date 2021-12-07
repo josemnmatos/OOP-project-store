@@ -1,7 +1,23 @@
 final public class Alimentar extends Produto {
+      /**
+       * Kilocalorias por 100 gramas
+       */
       private double kcalPor100g;
+      /**
+       * Percentagem de gordura do Produto
+       */
       private double percentagemGordura;
 
+      /**
+       * Construtor da subclasse de Produto, Alimentar
+       * 
+       * @param id ID do produto
+       * @param nome Nome do produto
+       * @param precoUnitario Preço por unidade do produto
+       * @param stock Stock do produto
+       * @param kcalPor100g Kilocalorias por 100 gramas do produto
+       * @param percentagemGordura Percentagem de gordura do produto
+       */
       public Alimentar(int id, String nome, double precoUnitario, int stock, double kcalPor100g,
                   double percentagemGordura) {
             super(id, nome, precoUnitario, stock);

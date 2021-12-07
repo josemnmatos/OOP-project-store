@@ -1,7 +1,23 @@
 final public class Mobiliario extends Produto {
+      /**
+       * Peso do produto mobiliario
+       */
       private double peso;
+      /**
+       * Dimensão do produto mobiliario
+       */
       private Dimensao dimensao;
 
+      /**
+       * Construtor da subclasse de Produto, Mobiliario
+       * 
+       * @param id             ID do produto
+       * @param nome           Nome do produto
+       * @param precoUnitario  Preço por unidade do produto
+       * @param stock          Stock do produto
+       * @param peso           Peso do produto
+       * @param dimensao       Dimensão do produto
+       */
       public Mobiliario(int id, String nome, double precoUnitario, int stock, double peso, Dimensao dimensao) {
             super(id, nome, precoUnitario, stock);
             if (peso < 0) {
@@ -40,6 +56,11 @@ final public class Mobiliario extends Produto {
                         + " euros\nStock: " + this.stock;
       }
 
+      /**
+       * Método que retorna os custos adicionais consoante o peso do produto
+       * 
+       * @return Valor dos custos adicionais
+       */
       @Override
       public double custosAdicionais() {
             if (this.peso > 15) {
