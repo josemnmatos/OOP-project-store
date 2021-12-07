@@ -4,23 +4,43 @@ import java.io.*;
 
 public class App {
     // ATRIBUTOS ------------------------------------
+
+    /**
+     * Cliente ativo na aplicação.
+     */
     private Cliente clienteAtivo;
-    // data atual da aplicacao
+
+    /**
+     * Data corrente da aplicação.
+     */
     private Data dataAtual = new Data(21, 11, 2021);
-    // preencher no arranque ao ler dos ficheiros
+
+    /**
+     * Lista de clientes existentes.
+     */
     private ArrayList<Cliente> clientes = new ArrayList<>();
-    // lista de produtos disponiveis
-    private ArrayList<Produto> produtosDisponiveis = new ArrayList<>();
-    // lista de promocoes ativas
-    private ArrayList<Promocao> promocoesAtivas = new ArrayList<>();
-    // lista de compras realizadas
-    private ArrayList<Compra> comprasRealizadas = new ArrayList<>();
+
+    /**
+     * Lista de produtos disponíveis para compra.
+     */
+    private ArrayList<Produto> produtos = new ArrayList<>();
+
+    /**
+     * Lista de promoções (ativas ou não) existentes.
+     */
+    private ArrayList<Promocao> promocoes = new ArrayList<>();
+
+    /**
+     * Lista de compras efetuadas até ao momento.
+     */
+    private ArrayList<Compra> compras = new ArrayList<>();
+
     Scanner scanner = new Scanner(System.in);
 
     // FUNCIONAMENTO ------------------------------------
 
     /**
-     * Função que lê um inteiro introduzido, o guarda numa varíavel e o retorna
+     * Método que lê um inteiro introduzido, o guarda numa varíavel e o retorna.
      * 
      * @return Inteiro introduzido
      */
@@ -31,8 +51,8 @@ public class App {
     }
 
     /**
-     * Função que lê uma String introduzida(Até ao '/n'), a guarda numa varíavel e a
-     * retorna
+     * Método que lê uma String introduzida(Até ao '/n'), a guarda numa varíavel e a
+     * retorna.
      * 
      * @return String introduzida
      */
@@ -42,7 +62,7 @@ public class App {
     }
 
     /**
-     * Função para facilitar interpretação da consola
+     * Método para facilitar interpretação da consola.
      */
     public void divisoria() {
         System.out.println("-------------------------");
@@ -50,7 +70,7 @@ public class App {
 
     // DATA ATUAL ------------------------------------
     /**
-     * Função que retorna a data atual
+     * Método que retorna a data atual.
      * 
      * @return Objeto da classe Data
      */
@@ -59,7 +79,7 @@ public class App {
     }
 
     /**
-     * Função que permite mudar a data atual da aplicação
+     * Método que permite mudar a data atual da aplicação.
      */
     public void mudaDataAtual() {
         int dia, mes, ano;
@@ -74,27 +94,32 @@ public class App {
         dataAtual.setDia(dia);
         dataAtual.setMes(mes);
         dataAtual.setAno(ano);
+        gerePromocoes();
     }
 
     // CLIENTES ------------------------------------
     /**
+     * Método que retorna o cliente ativo naquele momento.
      * 
-     * @return
+     * @return Objeto da classe Cliente
      */
     public Cliente getClienteAtivo() {
         return clienteAtivo;
     }
 
     /**
+     * Método que permite ativar um cliente.
      * 
-     * @param c
+     * @param c Cliente a ativar
      */
     public void setClienteAtivo(Cliente c) {
         clienteAtivo = c;
     }
 
     /**
-     * 
+     * Método que lê e trata os dados do ficheiro de texto relativo aos clientes da
+     * primeira vez que o programa funciona, no caso de já existir um ficheiro de
+     * objetos relativo a clientes, dá vez à leitura de esse ficheiro.
      */
     private void parseClientes() {
         File obj = new File("clientes.obj");
@@ -155,7 +180,8 @@ public class App {
     }
 
     /**
-     * 
+     * Método que guarda dados relativos a clientes no respetivo ficheiro de
+     * objetos. Cria o ficheiro caso não exista.
      */
     private void createObjClientes() {
         File f = new File("clientes.obj");
@@ -174,7 +200,9 @@ public class App {
     // PRODUTOS ------------------------------------
 
     /**
-     * 
+     * Método que lê e trata os dados do ficheiro de texto relativo aos produtos da
+     * primeira vez que o programa funciona, no caso de já existir um ficheiro de
+     * objetos relativo a produtos, dá vez à leitura de esse ficheiro.
      */
     private void parseProdutos() {
         File obj = new File("produtos.obj");
@@ -186,7 +214,7 @@ public class App {
                 FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 try {
-                    produtosDisponiveis = (ArrayList<Produto>) ois.readObject();
+                    produtos = (ArrayList<Produto>) ois.readObject();
                 } catch (EOFException e) {
                     ois.close();
                 }
@@ -217,7 +245,7 @@ public class App {
                             Mobiliario p = new Mobiliario(Integer.parseInt(detalhesProduto[1]), detalhesProduto[2],
                                     Double.parseDouble(detalhesProduto[3]), Integer.parseInt(detalhesProduto[4]), peso,
                                     d);
-                            produtosDisponiveis.add(p);
+                            produtos.add(p);
 
                         } else if (detalhesProduto[0].equals("limpeza")) {
                             int grauToxicidade = Integer.parseInt(detalhesProduto[5]);
@@ -225,7 +253,7 @@ public class App {
                             Limpeza p = new Limpeza(Integer.parseInt(detalhesProduto[1]), detalhesProduto[2],
                                     Double.parseDouble(detalhesProduto[3]), Integer.parseInt(detalhesProduto[4]),
                                     grauToxicidade);
-                            produtosDisponiveis.add(p);
+                            produtos.add(p);
 
                         } else if (detalhesProduto[0].equals("alimentar")) {
                             double kcal = Double.parseDouble(detalhesProduto[5]);
@@ -234,7 +262,7 @@ public class App {
                             Alimentar p = new Alimentar(Integer.parseInt(detalhesProduto[1]), detalhesProduto[2],
                                     Double.parseDouble(detalhesProduto[3]), Integer.parseInt(detalhesProduto[4]), kcal,
                                     percentagemGordura);
-                            produtosDisponiveis.add(p);
+                            produtos.add(p);
 
                         } else {
                             System.out.println("Erro: Produto inválido.");
@@ -254,14 +282,15 @@ public class App {
     }
 
     /**
-     * 
+     * Método que guarda dados relativos a produtos no respetivo ficheiro de
+     * objetos. Cria o ficheiro caso não exista.
      */
     private void createObjProdutos() {
         File f = new File("produtos.obj");
         try {
             FileOutputStream fos = new FileOutputStream(f, true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(produtosDisponiveis);
+            oos.writeObject(produtos);
             oos.close();
         } catch (FileNotFoundException ex) {
             System.err.println("Erro a criar ficheiro.");
@@ -272,11 +301,11 @@ public class App {
     }
 
     /**
-     * 
+     * Método que imprime os produtos disponíveis.
      */
     public void listaProdutos() {
         System.out.format("%-3s %-20s %-5s %-5s\n\n", "ID", "Produto", "Preço", "Stock");
-        for (Produto p : produtosDisponiveis) {
+        for (Produto p : produtos) {
             System.out.format("%-3d %-20s %4.2f %-5d\n\n", p.getId(), p.getNome(), p.getPrecoUnitario(), p.getStock());
         }
         System.out.println("\n");
@@ -285,7 +314,9 @@ public class App {
     // PROMOCOES ------------------------------------
 
     /**
-     * 
+     * Método que lê e trata os dados do ficheiro de texto relativo às promoções da
+     * primeira vez que o programa funciona, no caso de já existir um ficheiro de
+     * objetos relativo a promoções, dá vez à leitura de esse ficheiro.
      */
     private void parsePromocoes() {
         File obj = new File("promocoes.obj");
@@ -296,7 +327,7 @@ public class App {
                 FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 try {
-                    promocoesAtivas = (ArrayList<Promocao>) ois.readObject();
+                    promocoes = (ArrayList<Promocao>) ois.readObject();
                 } catch (EOFException e) {
                     ois.close();
                 }
@@ -318,7 +349,7 @@ public class App {
                         Produto produtoAssociado = null;
                         String[] detalhesPromocao = line.split(",");
                         int idProduto = Integer.parseInt(detalhesPromocao[1]);
-                        for (Produto p : produtosDisponiveis) {
+                        for (Produto p : produtos) {
                             if (p.getId() == idProduto) {
                                 produtoAssociado = p;
                                 break;
@@ -334,10 +365,10 @@ public class App {
                         // leve-3-pague-4
                         if (detalhesPromocao[0].equals("l3p4")) {
                             Promocao p1 = new Pague3Leve4(produtoAssociado, periodoPromocao);
-                            promocoesAtivas.add(p1);
+                            promocoes.add(p1);
                         } else if (detalhesPromocao[0].equals("pm")) {
                             Promocao p2 = new PagueMenos(produtoAssociado, periodoPromocao);
-                            promocoesAtivas.add(p2);
+                            promocoes.add(p2);
                         }
 
                     }
@@ -354,14 +385,15 @@ public class App {
     }
 
     /**
-     * 
+     * Método que guarda dados relativos a promoções no respetivo ficheiro de
+     * objetos. Cria o ficheiro caso não exista.
      */
     private void createObjPromocoes() {
         File f = new File("promocoes.obj");
         try {
             FileOutputStream fos = new FileOutputStream(f, true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(promocoesAtivas);
+            oos.writeObject(promocoes);
             oos.close();
         } catch (FileNotFoundException ex) {
             System.err.println("Erro a criar ficheiro.");
@@ -371,29 +403,22 @@ public class App {
     }
 
     /**
-     * 
+     * Método que imprime as promoções disponíveis.
      */
     public void listaPromocoes() {
         System.out.format("%-3s %-20s %-10s %-10s\n\n", "ID", "Produto", "DataInicio", "DataFim");
-        for (Promocao p : promocoesAtivas) {
+        for (Promocao p : promocoes) {
             System.out.format("%-3s %-20s %-10s %-10s\n\n", p.getProdutoAssociado().getId(),
                     p.getProdutoAssociado().getNome(), p.getPeriodoPromocao()[0], p.getPeriodoPromocao()[1]);
         }
         System.out.println("\n");
     }
 
-    /**
-     * 
-     * @return
-     */
-    public ArrayList<Promocao> getListaPromocoes() {
-        return promocoesAtivas;
-    }
-
     // COMPRA ------------------------------------
 
     /**
-     * 
+     * Método que lê e trata os dados do ficheiro de objetos relativo às compras
+     * efetuadas, caso este exista.
      */
     private void parseCompras() {
         File obj = new File("compras.obj");
@@ -402,7 +427,7 @@ public class App {
                 FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 try {
-                    comprasRealizadas = (ArrayList<Compra>) ois.readObject();
+                    compras = (ArrayList<Compra>) ois.readObject();
                 } catch (EOFException e) {
                     ois.close();
                 }
@@ -419,8 +444,9 @@ public class App {
     }
 
     /**
+     * Método que permite a um cliente realizar uma compra.
      * 
-     * @param cliente
+     * @param cliente Cliente a realizar a compra
      */
     public void realizarCompra(Cliente cliente) {
         ArrayList<ItemCompra> produtosCompra = new ArrayList<>();
@@ -440,7 +466,7 @@ public class App {
                     do {
                         System.out.print("Indique ID do produto a adicionar: ");
                         int idProduto = scanInt();
-                        for (Produto p : produtosDisponiveis) {
+                        for (Produto p : produtos) {
                             if (p.id == idProduto) {
                                 produtoAtivo = p;
                             }
@@ -456,7 +482,7 @@ public class App {
                     produtoAtivo.stock = produtoAtivo.stock - quantidade;
                     // esgotado
                     if (produtoAtivo.stock == 0) {
-                        produtosDisponiveis.remove(produtoAtivo);
+                        produtos.remove(produtoAtivo);
                     }
                     c.adicionarProduto(produtoAtivo, quantidade);
                     System.out.println("Produto adicionado ao carrinho.");
@@ -520,7 +546,7 @@ public class App {
                         option = scanInt();
                         if (option == 1) {
                             divisoria();
-                            comprasRealizadas.add(c);
+                            compras.add(c);
                             updateCompraObj();
                             return;
                         } else if (option == 2) {
@@ -540,7 +566,8 @@ public class App {
     }
 
     /**
-     * 
+     * Método que guarda dados relativos a compras no respetivo ficheiro de
+     * objetos. Cria o ficheiro caso não exista.
      */
     private void updateCompraObj() {
         try {
@@ -554,7 +581,7 @@ public class App {
         try {
             FileOutputStream fos = new FileOutputStream(f, true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(comprasRealizadas);
+            oos.writeObject(compras);
             oos.close();
         } catch (FileNotFoundException ex) {
             System.err.println("Erro a criar ficheiro.");
@@ -566,14 +593,17 @@ public class App {
 
     // INICIALIZACAO ------------------------------------
     /**
-     * 
+     * Método que ativa/desativa as promoções tendo em conta a data atual da
+     * aplicação.
      */
-    private void ativaPromocoes() {
-        for (Produto produto : produtosDisponiveis) {
-            for (Promocao promocao : promocoesAtivas) {
+    private void gerePromocoes() {
+        for (Produto produto : produtos) {
+            for (Promocao promocao : promocoes) {
                 if (produto.getId() == promocao.getProdutoAssociado().getId()) {
                     if (promocao.promocaoAtiva(dataAtual)) {
                         produto.setPromocaoAssociada(promocao);
+                    } else {
+                        produto.setPromocaoAssociada(null);
                     }
                 }
             }
@@ -581,14 +611,15 @@ public class App {
     }
 
     /**
-     * 
+     * Método que inicializa todos os atributos necessários para o funcionamento da
+     * aplicação.
      */
     public void inicializar() {
         parseClientes();
         parseProdutos();
         parsePromocoes();
         parseCompras();
-        ativaPromocoes();
+        gerePromocoes();
     }
 
     // MAIN ------------------------------------
@@ -662,30 +693,41 @@ public class App {
 
                 switch (option) {
 
-                    case 1:
-                        // Realizar Compra
+                    case 1:// Realizar compra
                         gestor.realizarCompra(clienteAtivo);
                         break;
-                    case 2:
-                        for (Compra c : gestor.comprasRealizadas) {
+
+                    case 2:// Compras realizadas
+                        if (gestor.compras.isEmpty()) {
+                            System.out.println("Não possui compras efetuadas.");
+                            break;
+                        }
+                        int contador = 0;
+                        for (Compra c : gestor.compras) {
                             if (c.getCliente().getNome().equals(clienteAtivo.getNome())) {
                                 gestor.divisoria();
                                 c.mostraCompra();
                                 gestor.divisoria();
+                                contador += 1;
                             }
+                        }
+                        if (contador == 0) {
+                            System.out.println("Não possui compras efetuadas.");
                         }
                         break;
 
-                    case 3:
+                    case 3:// Mudar data atual
                         gestor.mudaDataAtual();
                         System.out.println(gestor.getDataAtual());
                         break;
-                    case 4:
+
+                    case 4:// Log-out
                         System.out.println("Log-out efetuado.\n");
                         gestor.divisoria();
                         loggedIn = false;
                         break;
-                    case 5:
+
+                    case 5:// Terminar
                         gestor.scanner.close();
                         System.exit(1);
 

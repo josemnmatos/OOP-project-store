@@ -1,14 +1,37 @@
 import java.io.Serializable;
 
 public abstract class Promocao implements Serializable {
+      /**
+       * Produto associado à promoção.
+       */
       protected Produto produtoAssociado;
+      /**
+       * Período em que a promoção está ativa.
+       */
       protected Data[] periodoPromocao;
 
+      /**
+       * Construtor da superclasse Promocao.
+       * 
+       * @param produtoAssociado Produto associado à promoção.
+       * @param periodoPromocao  Período em que a promoção está ativa.
+       */
       public Promocao(Produto produtoAssociado, Data[] periodoPromocao) {
             this.produtoAssociado = produtoAssociado;
+            if (periodoPromocao.length != 2) {
+                  System.out.println("Erro na criação de uma promoção.");
+                  System.exit(1);
+            }
             this.periodoPromocao = periodoPromocao;
+
       }
 
+      /**
+       * 
+       * @param quantidade
+       * @param precoUnitario
+       * @return
+       */
       protected abstract double custoAposPromocao(int quantidade, double precoUnitario);
 
       public Produto getProdutoAssociado() {
