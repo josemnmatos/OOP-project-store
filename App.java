@@ -3,44 +3,72 @@ import java.util.Scanner;
 import java.io.*;
 
 public class App {
+    // ATRIBUTOS ------------------------------------
     private Cliente clienteAtivo;
+    // data atual da aplicacao
     private Data dataAtual = new Data(21, 11, 2021);
     // preencher no arranque ao ler dos ficheiros
     private ArrayList<Cliente> clientes = new ArrayList<>();
+    // lista de produtos disponiveis
     private ArrayList<Produto> produtosDisponiveis = new ArrayList<>();
+    // lista de promocoes ativas
     private ArrayList<Promocao> promocoesAtivas = new ArrayList<>();
-
     // lista de compras realizadas
     private ArrayList<Compra> comprasRealizadas = new ArrayList<>();
-
-    // scanner
     Scanner scanner = new Scanner(System.in);
 
+    // FUNCIONAMENTO ------------------------------------
+
+    /**
+     * Função que lê um inteiro introduzido, o guarda numa varíavel e o retorna
+     * 
+     * @return Inteiro introduzido
+     */
     public int scanInt() {
         int input = scanner.nextInt();
         scanner.nextLine();
         return input;
     }
 
-    public String scanLinha() {
+    /**
+     * Função que lê uma String introduzida(Até ao '/n'), a guarda numa varíavel e a
+     * retorna
+     * 
+     * @return String introduzida
+     */
+    public String scanString() {
         String input = scanner.nextLine();
         return input;
     }
 
-    // DATA ATUAL
+    /**
+     * Função para facilitar interpretação da consola
+     */
+    public void divisoria() {
+        System.out.println("-------------------------");
+    }
+
+    // DATA ATUAL ------------------------------------
+    /**
+     * Função que retorna a data atual
+     * 
+     * @return Objeto da classe Data
+     */
     public Data getDataAtual() {
         return dataAtual;
     }
 
+    /**
+     * Função que permite mudar a data atual da aplicação
+     */
     public void mudaDataAtual() {
         int dia, mes, ano;
         do {
-            System.out.println("Dia: ");
-
+            System.out.print("Dia: ");
             dia = scanInt();
-            System.out.println("Mês: ");
+            System.out.print("Mês: ");
             mes = scanInt();
-            System.out.println("Ano: ");
+            System.out.print("Ano: ");
             ano = scanInt();
         } while (dia < 1 || dia >= 32 || mes < 1 || mes >= 13);
         dataAtual.setDia(dia);
@@ -48,15 +76,26 @@ public class App {
         dataAtual.setAno(ano);
     }
 
-    // CLIENTES
+    // CLIENTES ------------------------------------
+    /**
+     * 
+     * @return
+     */
     public Cliente getClienteAtivo() {
         return clienteAtivo;
     }
 
+    /**
+     * 
+     * @param c
+     */
     public void setClienteAtivo(Cliente c) {
         clienteAtivo = c;
     }
 
+    /**
+     * 
+     */
     private void parseClientes() {
         File obj = new File("clientes.obj");
         // verifica a existencia de ficheiro de objetos
@@ -111,21 +150,13 @@ public class App {
 
             }
             // cria ficheiro de objetos
-            try {
-                File objCreate = new File("clientes.obj");
-                if (objCreate.createNewFile()) {
-                    System.err.println("File created: " + objCreate.getName());
-                } else {
-                    System.err.println("Ficheiro de objetos já existe.");
-                }
-            } catch (IOException e) {
-                System.err.println("Erro ao criar ficheiro de objetos.");
-            }
             createObjClientes();
         }
     }
 
-    // guarda valores da lista de clientes no ficheiro de objetos
+    /**
+     * 
+     */
     private void createObjClientes() {
         File f = new File("clientes.obj");
         try {
@@ -140,16 +171,11 @@ public class App {
         }
     }
 
-    // lista todos os clientes
-    public void listaClientes() {
-        System.out.println("\nClientes :");
-        for (Cliente c : clientes) {
-            System.out.println(c);
-        }
+    // PRODUTOS ------------------------------------
 
-    }
-
-    // PRODUTOS
+    /**
+     * 
+     */
     private void parseProdutos() {
         File obj = new File("produtos.obj");
 
@@ -227,7 +253,9 @@ public class App {
 
     }
 
-    // guarda valores da lista de produtos no ficheiro de objetos
+    /**
+     * 
+     */
     private void createObjProdutos() {
         File f = new File("produtos.obj");
         try {
@@ -243,7 +271,9 @@ public class App {
 
     }
 
-    // lista todos os produtos
+    /**
+     * 
+     */
     public void listaProdutos() {
         System.out.format("%-3s %-20s %-5s %-5s\n\n", "ID", "Produto", "Preço", "Stock");
         for (Produto p : produtosDisponiveis) {
@@ -252,8 +282,11 @@ public class App {
         System.out.println("\n");
     }
 
-    // PROMOCOES
+    // PROMOCOES ------------------------------------
 
+    /**
+     * 
+     */
     private void parsePromocoes() {
         File obj = new File("promocoes.obj");
         // verifica a existencia de ficheiro de objetos
@@ -320,6 +353,9 @@ public class App {
 
     }
 
+    /**
+     * 
+     */
     private void createObjPromocoes() {
         File f = new File("promocoes.obj");
         try {
@@ -334,6 +370,9 @@ public class App {
         }
     }
 
+    /**
+     * 
+     */
     public void listaPromocoes() {
         System.out.format("%-3s %-20s %-10s %-10s\n\n", "ID", "Produto", "DataInicio", "DataFim");
         for (Promocao p : promocoesAtivas) {
@@ -343,24 +382,19 @@ public class App {
         System.out.println("\n");
     }
 
-    private void ativaPromocoes() {
-        for (Produto produto : produtosDisponiveis) {
-            for (Promocao promocao : promocoesAtivas) {
-                if (produto.getId() == promocao.getProdutoAssociado().getId()) {
-                    if (promocao.promocaoAtiva(dataAtual)) {
-                        System.out.println(promocao.produtoAssociado.getNome());
-                        produto.setPromocaoAssociada(promocao);
-                    }
-                }
-            }
-        }
-    }
-
+    /**
+     * 
+     * @return
+     */
     public ArrayList<Promocao> getListaPromocoes() {
         return promocoesAtivas;
     }
 
-    // COMPRA
+    // COMPRA ------------------------------------
+
+    /**
+     * 
+     */
     private void parseCompras() {
         File obj = new File("compras.obj");
         if (obj.exists() && obj.isFile()) {
@@ -384,6 +418,10 @@ public class App {
         }
     }
 
+    /**
+     * 
+     * @param cliente
+     */
     public void realizarCompra(Cliente cliente) {
         ArrayList<ItemCompra> produtosCompra = new ArrayList<>();
         Compra c = new Compra(cliente, produtosCompra,
@@ -501,6 +539,9 @@ public class App {
         }
     }
 
+    /**
+     * 
+     */
     private void updateCompraObj() {
         try {
             new FileOutputStream("compras.obj").close();
@@ -523,6 +564,25 @@ public class App {
 
     }
 
+    // INICIALIZACAO ------------------------------------
+    /**
+     * 
+     */
+    private void ativaPromocoes() {
+        for (Produto produto : produtosDisponiveis) {
+            for (Promocao promocao : promocoesAtivas) {
+                if (produto.getId() == promocao.getProdutoAssociado().getId()) {
+                    if (promocao.promocaoAtiva(dataAtual)) {
+                        produto.setPromocaoAssociada(promocao);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 
+     */
     public void inicializar() {
         parseClientes();
         parseProdutos();
@@ -531,16 +591,12 @@ public class App {
         ativaPromocoes();
     }
 
-    public void divisoria() {
-        System.out.println("-------------------------");
-    }
-
+    // MAIN ------------------------------------
     public static void main(String[] args) {
 
         App gestor = new App();
 
         gestor.inicializar();
-        gestor.listaPromocoes();
 
         boolean loggedIn = false;
         while (true) {
@@ -560,7 +616,7 @@ public class App {
                         gestor.divisoria();
                         System.out.print("Email-> ");
 
-                        String email = gestor.scanLinha();
+                        String email = gestor.scanString();
                         for (Cliente c : gestor.clientes) {
                             if (email.equals(c.getEmail())) {
                                 clienteAtivo = c;
