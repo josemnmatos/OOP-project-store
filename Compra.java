@@ -96,9 +96,9 @@ public class Compra implements Serializable {
       public void mostraCompra() {
             System.out.println(
                         "\nData: " + this.dataCompra +
-                                    "\n\nProdutos:");
+                                    "\n\nProdutos:\n");
             for (ItemCompra i : this.listaProduto) {
-                  System.out.format("%-3d %-20s %-5f\n", i.getQuantidade(), i.getProduto().getNome(),
+                  System.out.format("%-3d %-20s %-5.2f euros\n", i.getQuantidade(), i.getProduto().getNome(),
                               i.getProduto().getPrecoUnitario());
             }
             System.out.println("\nCusto: " + this.custoFinal() + " euros");
@@ -106,6 +106,10 @@ public class Compra implements Serializable {
 
       public Cliente getCliente() {
             return this.cliente;
+      }
+
+      public Data getDataCompra() {
+            return this.dataCompra;
       }
 
       public ArrayList<ItemCompra> getLista() {

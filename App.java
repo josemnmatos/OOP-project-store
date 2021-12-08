@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.io.*;
 
@@ -35,7 +36,10 @@ public class App {
      */
     private ArrayList<Compra> compras = new ArrayList<>();
 
-    Scanner scanner = new Scanner(System.in);
+    /**
+     * Scanner usado para inputs do utilizador
+     */
+    private Scanner sc = new Scanner(System.in);
 
     // FUNCIONAMENTO ------------------------------------
 
@@ -45,8 +49,15 @@ public class App {
      * @return Inteiro introduzido
      */
     public int scanInt() {
-        int input = scanner.nextInt();
-        scanner.nextLine();
+        int input = 0;
+        do {
+            try {
+                input = sc.nextInt();
+            } catch (InputMismatchException ex) {
+                System.out.print("Número inválido. Tente de novo -> ");
+            }
+            sc.nextLine(); // clears the buffer
+        } while (input <= 0);
         return input;
     }
 
@@ -57,7 +68,7 @@ public class App {
      * @return String introduzida
      */
     public String scanString() {
-        String input = scanner.nextLine();
+        String input = sc.nextLine();
         return input;
     }
 
@@ -304,11 +315,15 @@ public class App {
      * Método que imprime os produtos disponíveis
      */
     public void listaProdutos() {
-        System.out.format("%-3s %-20s %-5s %-5s\n\n", "ID", "Produto", "Preço", "Stock");
+        System.out.format("%-3s  %-20s %-8s  %-5s\n\n", "ID", "Produto", "Stock", "Preço");
         for (Produto p : produtos) {
-            System.out.format("%-3d %-20s %4.2f %-5d\n\n", p.getId(), p.getNome(), p.getPrecoUnitario(), p.getStock());
+            if (p.getStock() > 0)
+                System.out.format("%-3d  %-20s %-8d  %.2f euros\n\n", p.getId(), p.getNome(),
+                        p.getStock(), p.getPrecoUnitario());
+            if (p.getStock() == 0)
+                System.out.format("%-3d  %-20s %-8s  %.2f euros\n\n", p.getId(), p.getNome(),
+                        "ESGOTADO", p.getPrecoUnitario());
         }
-        System.out.println("\n");
     }
 
     // PROMOCOES ------------------------------------
@@ -406,12 +421,13 @@ public class App {
      * Método que imprime as promoções disponíveis
      */
     public void listaPromocoes() {
-        System.out.format("%-3s %-20s %-10s %-10s\n\n", "ID", "Produto", "DataInicio", "DataFim");
+        System.out.format("%-3s  %-20s %-10s    %-10s    %-15s\n\n", "ID", "Produto", "Data Início", "Data Fim",
+                "Tipo");
         for (Promocao p : promocoes) {
-            System.out.format("%-3s %-20s %-10s %-10s\n\n", p.getProdutoAssociado().getId(),
-                    p.getProdutoAssociado().getNome(), p.getPeriodoPromocao()[0], p.getPeriodoPromocao()[1]);
+            System.out.format("%-3s  %-20s %-10s    %-10s    %-15s\n\n", p.getProdutoAssociado().getId(),
+                    p.getProdutoAssociado().getNome(), p.getPeriodoPromocao()[0], p.getPeriodoPromocao()[1],
+                    p.tipoPromocao());
         }
-        System.out.println("\n");
     }
 
     // COMPRA ------------------------------------
@@ -444,6 +460,44 @@ public class App {
     }
 
     /**
+     * Método que repõe stock de um certo produto na lista principal de produtos
+     * 
+     * @param p          Produto a repor
+     * @param quantidade Quantidade de produto a repor
+     */
+    public void reporStock(Produto p, int quantidade) {
+        for (Produto prod : produtos) {
+            if (prod.getId() == p.getId()) {
+                prod.setStock(prod.getStock() + quantidade);
+            }
+        }
+    }
+
+    /**
+     * Método que tira stock de um certo produto na lista principal de produtos
+     * 
+     * @param p          Produto a tirar
+     * @param quantidade Quantidade a tirar
+     * @return True se a operação foi efetuada, false se foi immpossível efetuar a
+     *         operação
+     */
+    public boolean tiraStock(Produto p, int quantidade) {
+        Produto ativo = null;
+        for (Produto prod : produtos) {
+            if (prod.getId() == p.getId()) {
+                ativo = prod;
+                break;
+            }
+        }
+        if (quantidade > ativo.getStock()) {
+            return false;
+        } else {
+            ativo.setStock(ativo.getStock() - quantidade);
+            return true;
+        }
+    }
+
+    /**
      * Método que permite a um cliente realizar uma compra
      * 
      * @param cliente Cliente a realizar a compra
@@ -453,15 +507,16 @@ public class App {
         Compra c = new Compra(cliente, produtosCompra,
                 new Data(dataAtual.getDia(), dataAtual.getMes(), dataAtual.getAno()));
         while (true) {
+            divisoria();
+            System.out.println(dataAtual+"\n");
             System.out.println(
-                    "1) Adicionar produto\n2) Remover produto\n3) Carrinho de compras\n4) Produtos e Promoções\n5) Checkout\n6) Menu\n\nCusto atual-> "
-                            + c.custoAtual() + "euros");
+                    "1) Adicionar produto\n2) Remover produto\n3) Detalhes de um produto\n4) Carrinho de compras\n5) Produtos e Promoções\n6) Checkout\n7) Menu\n");
+            System.out.format("Custo atual: %.2f euros \n ", c.custoAtual());
             System.out.print("Opção-> ");
             int option = scanInt();
             switch (option) {
 
-                case 1:
-                    // adicionar produto
+                case 1:// Adicionar produto
                     Produto produtoAtivo = null;
                     do {
                         System.out.print("Indique ID do produto a adicionar: ");
@@ -471,27 +526,48 @@ public class App {
                                 produtoAtivo = p;
                             }
                         }
+                        if (produtoAtivo == null) {
+                            System.out.println("Produto inexistente.");
+                        }
                     } while (produtoAtivo == null);
                     // quantidade
                     int quantidade;
-                    do {
+                    while (true) {
                         System.out.print("Quantidade a adicionar: ");
                         quantidade = scanInt();
-                    } while (quantidade > produtoAtivo.stock);
-                    // remove stock
-                    produtoAtivo.stock = produtoAtivo.stock - quantidade;
-                    // esgotado
-                    if (produtoAtivo.stock == 0) {
-                        produtos.remove(produtoAtivo);
+                        // existe stock suficiente
+                        if (tiraStock(produtoAtivo, quantidade)) {
+                            int count = 0;
+                            for (ItemCompra item : c.getLista()) {
+                                if (item.getProduto().getId() == produtoAtivo.getId()) {
+                                    item.setQuantidade(item.getQuantidade() + quantidade);
+                                    count += 1;
+                                }
+                            }
+                            if (count == 0)
+                                c.adicionarProduto(produtoAtivo, quantidade);
+                            System.out.println(
+                                    "Adicionado: " + quantidade + " x " + produtoAtivo.getNome() + " ao carrinho.");
+                            break;
+                        } else {// nao existe stock suficiente
+                            System.out.println("Não foi possível concluir a operação. Stock disponível: "
+                                    + produtoAtivo.getStock());
+                            System.out.println("Deseja adicionar outra quantidade?\n 1)Sim\n 2)Não");
+                            do {
+                                System.out.print("Opção-> ");
+                                option = scanInt();
+                                if (option != 1 && option != 2)
+                                    System.out.println("Opção inválida.");
+                            } while (option != 1 && option != 2);
+                            if (option == 2) {
+                                break;
+                            }
+                        }
                     }
-                    c.adicionarProduto(produtoAtivo, quantidade);
-                    System.out.println("Produto adicionado ao carrinho.");
                     break;
 
-                case 2:
-                    // remover produto
+                case 2:// Remover produto
                     ItemCompra item = null;
-
                     do {
                         System.out.print("Indique ID do produto a remover: ");
                         int idProduto = scanInt();
@@ -500,36 +576,83 @@ public class App {
                                 item = i;
                             }
                         }
+                        if (item == null) {
+                            System.out.println("Produto inexistente.");
+                        }
                     } while (item == null);
                     // quantidade
-                    do {
+                    while (true) {
                         System.out.print("Quantidade a remover: ");
                         quantidade = scanInt();
-                    } while (quantidade > item.getQuantidade());
-                    c.removerProduto(item.getProduto(), quantidade);
+                        // quantidade válida
+                        if (quantidade <= item.getQuantidade()) {
+                            reporStock(item.getProduto(), item.getQuantidade());
+                            // remove produto por completo
+                            if (quantidade == item.getQuantidade()) {
+                                System.out.println(
+                                        "Removido: " + item.getProduto().getNome() + " do carrinho.");
+                                c.getLista().remove(item);
+                            } else {// remove apenas uma certa quantidade de produto
+                                System.out.println(
+                                        "Removido: " + quantidade + " x " + item.getProduto().getNome()
+                                                + " do carrinho.");
+                                item.setQuantidade(item.getQuantidade() - quantidade);
+                            }
+                            break;
 
-                    // adicionar stock
-
-                    System.out.println("Produto removido do carrinho.");
+                        } else {// quantidade invalida
+                            System.out.println("Não foi possível concluir a operação. Quantidade no carrinho: "
+                                    + item.getQuantidade());
+                            System.out.println("Deseja remover outra quantidade?\n 1)Sim\n 2)Não");
+                            do {
+                                System.out.print("Opção-> ");
+                                option = scanInt();
+                                if (option != 1 && option != 2)
+                                    System.out.println("Opção inválida.");
+                            } while (option != 1 && option != 2);
+                            if (option == 2) {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                case 3:// Detalhes produto
+                    divisoria();
+                    System.out.print("Indique ID do produto a consultar: ");
+                    int idProduto = scanInt();
+                    int count = 0;
+                    for (Produto p : produtos) {
+                        if (p.id == idProduto) {
+                            System.out.println(p);
+                            count += 1;
+                            break;
+                        }
+                    }
+                    if (count == 0)
+                        System.out.println("Produto inexistente.");
                     break;
 
-                case 3:
-                    // mostrar carrinho
+                case 4:// Mostrar carrinho
+                    divisoria();
+                    if (c.getLista().isEmpty()) {
+                        System.out.println("Carrinho vazio.");
+                        break;
+                    }
                     System.out.println("Carrinho:\n");
                     for (ItemCompra i : c.getLista()) {
-                        System.out.format("%-3d %-20s %-5f\n\n", i.getQuantidade(), i.getProduto().getNome(),
+                        System.out.format("%-3d %-20s  %.2f\n\n", i.getQuantidade(), i.getProduto().getNome(),
                                 i.getProduto().getPrecoUnitario());
                     }
                     break;
-                case 4:
+                case 5:// Listar produtos e promoções
                     divisoria();
                     System.out.println("Produtos:\n");
                     listaProdutos();
+                    divisoria();
                     System.out.println("Promoções:\n");
                     listaPromocoes();
-                    divisoria();
                     break;
-                case 5:
+                case 6:// Check-out
                     if (c.getLista().isEmpty()) {
                         System.out.println("Carrinho vazio.");
                         break;
@@ -537,32 +660,49 @@ public class App {
                     // checkout
                     // realiza nova compra com cliente e data atuais
                     divisoria();
-                    System.out.println("Custo       : " + c.custoAtual());
-                    System.out.println("Portes      : " + (c.custoFinal() - c.custoAtual()));
-                    System.out.println("Custo Final : " + c.custoFinal());
+                    System.out.format("%-15s : %.2f euros\n", "Custo", c.custoAtual());
+                    System.out.format("%-15s : %.2f euros\n", "Portes", (c.custoFinal() - c.custoAtual()));
+                    System.out.format("%-15s : %.2f euros\n", "Custo Final", c.custoFinal());
                     System.out.println("Pretende confirmar a compra?\n1) Sim\n2) Não");
                     while (true) {
-                        System.out.println("Opção-> ");
+                        System.out.print("Opção-> ");
                         option = scanInt();
                         if (option == 1) {
-                            divisoria();
                             compras.add(c);
                             updateCompraObj();
                             return;
                         } else if (option == 2) {
-                            divisoria();
                             break;
+                        } else {
+                            System.out.println("Opção inválida.");
                         }
                     }
 
-                case 6:
-                    return;
-
+                case 7:// Voltar ao menu
+                    System.out.println("O carrinho atual será perdido. Tem a certeza?\n1) Sim\n2) Não");
+                    while (true) {
+                        System.out.print("Opção-> ");
+                        option = scanInt();
+                        if (option == 1) {
+                            // repoe todos os items do carrinho
+                            for (ItemCompra ic : c.getLista()) {
+                                reporStock(ic.getProduto(), ic.getQuantidade());
+                            }
+                            c = null;
+                            return;
+                        } else if (option == 2) {
+                            divisoria();
+                            break;
+                        } else {
+                            System.out.println("Opção inválida.");
+                        }
+                    }
                 default:
                     System.out.println("Operação inválida.");
 
             }
         }
+
     }
 
     /**
@@ -635,18 +775,15 @@ public class App {
             Cliente clienteAtivo = null;
             while (loggedIn == false) {
                 gestor.divisoria();
-                System.out.println(gestor.getDataAtual());
+                System.out.println(gestor.getDataAtual() + "\n");
                 System.out.println("1) Fazer log-in\n2) Terminar programa\n");
-                gestor.divisoria();
                 System.out.print("Opção-> ");
                 int option = gestor.scanInt();
-
+                System.out.println();
                 switch (option) {
 
                     case 1:
-                        gestor.divisoria();
-                        System.out.print("Email-> ");
-
+                        System.out.print("Introduza o email para fazer login:  ");
                         String email = gestor.scanString();
                         for (Cliente c : gestor.clientes) {
                             if (email.equals(c.getEmail())) {
@@ -657,14 +794,13 @@ public class App {
                         }
                         if (loggedIn == true) {
                             System.out.println("Log-in efetuado.\n");
-                            gestor.divisoria();
                             break;
                         }
                         System.out.println("Email inválido.");
                         break;
 
                     case 2:
-                        gestor.scanner.close();
+                        gestor.sc.close();
                         System.exit(1);
 
                     default:
@@ -676,18 +812,19 @@ public class App {
 
             while (loggedIn == true) {
                 gestor.divisoria();
-                System.out.println("Bem-vindo, " + clienteAtivo.getNome() + ".");
-                // easter egg
+                System.out.println(gestor.getDataAtual()+"\n");
+                System.out.println("Bem-vindo, " + clienteAtivo.getNome() + ".\n");
+                // Aniversário do cliente
                 if (clienteAtivo.getDataNascimento().getDia() == gestor.getDataAtual().getDia()
                         && clienteAtivo.getDataNascimento().getMes() == gestor.getDataAtual().getMes()
                         && clienteAtivo.getDataNascimento().getAno() < gestor.getDataAtual().getAno()) {
                     System.out.println("FELIZ ANIVERSÁRIO! "
                             + (gestor.getDataAtual().getAno() - clienteAtivo.getDataNascimento().getAno()) + "!\n");
                 }
-                gestor.divisoria();
+
                 System.out.println(
                         "1) Realizar compra\n2) Compras realizadas\n3) Mudar data atual\n4) Log-out\n5) Terminar programa\n");
-                gestor.divisoria();
+
                 System.out.print("Opção-> ");
                 int option = gestor.scanInt();
 
@@ -704,11 +841,14 @@ public class App {
                         }
                         int contador = 0;
                         for (Compra c : gestor.compras) {
+                            // verifica quais as compras pertencentes ao cliente ativo
                             if (c.getCliente().getNome().equals(clienteAtivo.getNome())) {
-                                gestor.divisoria();
-                                c.mostraCompra();
-                                gestor.divisoria();
-                                contador += 1;
+                                // verifica se a compra foi feita antes da data atual
+                                if (c.getDataCompra().antesDe(gestor.getDataAtual())) {
+                                    gestor.divisoria();
+                                    c.mostraCompra();
+                                    contador += 1;
+                                }
                             }
                         }
                         if (contador == 0) {
@@ -723,12 +863,11 @@ public class App {
 
                     case 4:// Log-out
                         System.out.println("Log-out efetuado.\n");
-                        gestor.divisoria();
                         loggedIn = false;
                         break;
 
                     case 5:// Terminar
-                        gestor.scanner.close();
+                        gestor.sc.close();
                         System.exit(1);
 
                     default:
