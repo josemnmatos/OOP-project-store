@@ -511,7 +511,7 @@ public class App {
             System.out.println(dataAtual+"\n");
             System.out.println(
                     "1) Adicionar produto\n2) Remover produto\n3) Detalhes de um produto\n4) Carrinho de compras\n5) Produtos e Promoções\n6) Checkout\n7) Menu\n");
-            System.out.format("Custo atual: %.2f euros \n ", c.custoAtual());
+            System.out.format("Custo atual: %.2f euros \n", c.custoAtual());
             System.out.print("Opção-> ");
             int option = scanInt();
             switch (option) {
