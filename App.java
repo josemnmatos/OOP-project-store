@@ -105,6 +105,7 @@ public class App {
         dataAtual.setDia(dia);
         dataAtual.setMes(mes);
         dataAtual.setAno(ano);
+        //atualiza promocoes
         gerePromocoes();
     }
 
@@ -338,7 +339,6 @@ public class App {
         // verifica a existencia de ficheiro de objetos
         if (obj.exists() && obj.isFile()) {
             try {
-                // le mobiliario
                 FileInputStream fis = new FileInputStream(obj);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 try {
@@ -353,7 +353,7 @@ public class App {
             } catch (ClassNotFoundException ex) {
                 System.err.println("Erro a converter objeto.");
             }
-        } else {
+        } else {//caso nao exista
             File f = new File("promocoes.txt");
             if (f.exists() && f.isFile()) {
                 try {
@@ -381,6 +381,7 @@ public class App {
                         if (detalhesPromocao[0].equals("l3p4")) {
                             Promocao p1 = new Pague3Leve4(produtoAssociado, periodoPromocao);
                             promocoes.add(p1);
+                        //pague menos
                         } else if (detalhesPromocao[0].equals("pm")) {
                             Promocao p2 = new PagueMenos(produtoAssociado, periodoPromocao);
                             promocoes.add(p2);
@@ -518,6 +519,7 @@ public class App {
 
                 case 1:// Adicionar produto
                     Produto produtoAtivo = null;
+                    //produto
                     do {
                         System.out.print("Indique ID do produto a adicionar: ");
                         int idProduto = scanInt();
@@ -535,21 +537,23 @@ public class App {
                     while (true) {
                         System.out.print("Quantidade a adicionar: ");
                         quantidade = scanInt();
-                        // existe stock suficiente
+                        // existe stock suficiente, adiciona
                         if (tiraStock(produtoAtivo, quantidade)) {
                             int count = 0;
+                            //verifica se produto ja existe no carrinho, se existe adiciona quantidade
                             for (ItemCompra item : c.getLista()) {
                                 if (item.getProduto().getId() == produtoAtivo.getId()) {
                                     item.setQuantidade(item.getQuantidade() + quantidade);
                                     count += 1;
                                 }
                             }
+                            //adiciona produto caso nao exista no carrinho
                             if (count == 0)
                                 c.adicionarProduto(produtoAtivo, quantidade);
                             System.out.println(
                                     "Adicionado: " + quantidade + " x " + produtoAtivo.getNome() + " ao carrinho.");
                             break;
-                        } else {// nao existe stock suficiente
+                        } else {// nao existe stock suficiente, apresenta alternativa
                             System.out.println("Não foi possível concluir a operação. Stock disponível: "
                                     + produtoAtivo.getStock());
                             System.out.println("Deseja adicionar outra quantidade?\n 1)Sim\n 2)Não");
@@ -568,6 +572,7 @@ public class App {
 
                 case 2:// Remover produto
                     ItemCompra item = null;
+                    //produto
                     do {
                         System.out.print("Indique ID do produto a remover: ");
                         int idProduto = scanInt();
@@ -584,7 +589,7 @@ public class App {
                     while (true) {
                         System.out.print("Quantidade a remover: ");
                         quantidade = scanInt();
-                        // quantidade válida
+                        // quantidade valida
                         if (quantidade <= item.getQuantidade()) {
                             reporStock(item.getProduto(), item.getQuantidade());
                             // remove produto por completo
@@ -621,6 +626,7 @@ public class App {
                     System.out.print("Indique ID do produto a consultar: ");
                     int idProduto = scanInt();
                     int count = 0;
+                    //procura produto com idProduto
                     for (Produto p : produtos) {
                         if (p.id == idProduto) {
                             System.out.println(p);
@@ -737,10 +743,12 @@ public class App {
      * aplicação
      */
     private void gerePromocoes() {
-        for (Produto produto : produtos) {
-            for (Promocao promocao : promocoes) {
+        for (Produto produto : produtos) {//percorre produtos
+            for (Promocao promocao : promocoes) {//percorre promocoes
                 if (produto.getId() == promocao.getProdutoAssociado().getId()) {
+                    //se existe produto da promocao nos produtos
                     if (promocao.promocaoAtiva(dataAtual)) {
+                        //se promocao esta ativa à data atual
                         produto.setPromocaoAssociada(promocao);
                     } else {
                         produto.setPromocaoAssociada(null);
@@ -766,12 +774,12 @@ public class App {
     public static void main(String[] args) {
 
         App gestor = new App();
-
+        //trata ficheiros
         gestor.inicializar();
 
         boolean loggedIn = false;
+        //MENU DE LOGIN
         while (true) {
-
             Cliente clienteAtivo = null;
             while (loggedIn == false) {
                 gestor.divisoria();
@@ -809,7 +817,7 @@ public class App {
                 }
 
             }
-
+            //MENU DO CLIENTE
             while (loggedIn == true) {
                 gestor.divisoria();
                 System.out.println(gestor.getDataAtual() + "\n");
