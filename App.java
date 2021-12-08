@@ -159,7 +159,7 @@ public class App {
                     FileReader fr = new FileReader(f);
                     BufferedReader br = new BufferedReader(fr);
                     String line;
-                    while ((line = br.readLine()) != null) {
+                    while ((line = br.readLine()) != null) {//parse dos clientes
                         String[] detalhesCliente = line.split(",");
                         String[] morada = detalhesCliente[2].split("/");
                         Morada m = new Morada(morada[0], Integer.parseInt(morada[1]), Integer.parseInt(morada[2]));
@@ -244,7 +244,7 @@ public class App {
                     FileReader fr = new FileReader(f);
                     BufferedReader br = new BufferedReader(fr);
                     String line;
-                    while ((line = br.readLine()) != null) {
+                    while ((line = br.readLine()) != null) {//parse dos produtos
                         String[] detalhesProduto = line.split(",");
 
                         if (detalhesProduto[0].equals("mobiliario")) {
@@ -360,7 +360,7 @@ public class App {
                     FileReader fr = new FileReader(f);
                     BufferedReader br = new BufferedReader(fr);
                     String line;
-                    while ((line = br.readLine()) != null) {
+                    while ((line = br.readLine()) != null) {//parse das promocoes
                         Produto produtoAssociado = null;
                         String[] detalhesPromocao = line.split(",");
                         int idProduto = Integer.parseInt(detalhesPromocao[1]);
@@ -508,7 +508,7 @@ public class App {
                 new Data(dataAtual.getDia(), dataAtual.getMes(), dataAtual.getAno()));
         while (true) {
             divisoria();
-            System.out.println(dataAtual+"\n");
+            System.out.println(dataAtual + "\n");
             System.out.println(
                     "1) Adicionar produto\n2) Remover produto\n3) Detalhes de um produto\n4) Carrinho de compras\n5) Produtos e Promoções\n6) Checkout\n7) Menu\n");
             System.out.format("Custo atual: %.2f euros \n", c.custoAtual());
@@ -812,7 +812,7 @@ public class App {
 
             while (loggedIn == true) {
                 gestor.divisoria();
-                System.out.println(gestor.getDataAtual()+"\n");
+                System.out.println(gestor.getDataAtual() + "\n");
                 System.out.println("Bem-vindo, " + clienteAtivo.getNome() + ".\n");
                 // Aniversário do cliente
                 if (clienteAtivo.getDataNascimento().getDia() == gestor.getDataAtual().getDia()
