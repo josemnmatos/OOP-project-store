@@ -1,5 +1,5 @@
-r,Gilberto,Rua do pau/32/3000100,gilbertodistreet@sapo.pt,961818638,22/10/1993
-f,GOAT Manafa,Rua da street/31/3020100,mandistreet@sapo.pt,961818918,21/1/1996
-f,Marega,Rua da street/31/3020100,maregadistreet@sapo.pt,961818699,1/1/2345
-r,Pote,Rua da ruelz/90/1090100,potebestmarcador@iol.pt,917768944,2/2/1999
-f,GrimalGod,Rua da trivela/37/3080400,a,961890233,7/9/1997
+r,Avelino Ruas,Rua do Avelino/127/3000199,avelino1968@sapo.pt,919191911,22/10/1968
+f,Tome Azevedo,Rua da Escola/3/3020100,tomeazv@gmail.com,961818918,12/03/1997
+r,Francisca Costa ,Rua da Trivela/19/3080400,kikatrivela@outlook.com,961290233,02/02/1992
+f,Joao Donato,Rua da Street/3/3020100,voltamarega@iol.pt,969597834,01/11/2002
+f,Jose Matos,Rua Rua/74/2999100,zeelastico@gmail.com,917768944,17/08/2002
